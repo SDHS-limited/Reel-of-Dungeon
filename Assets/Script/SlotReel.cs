@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SlotReel : MonoBehaviour
@@ -9,11 +10,12 @@ public class SlotReel : MonoBehaviour
     [SerializeField] private Image displayImage;
 
     [Header("Settings")]
-    [Tooltip("심볼 하나가 위에서 중앙으로 내려오는 시간입니다.")]
+    [Tooltip("심볼 하나가 오른쪽에서 중앙으로 들어오는 시간입니다.")]
     [SerializeField] private float spinSpeed = 0.12f;
 
-    [Tooltip("릴 높이에 대한 심볼 이동 거리 배율입니다.")]
-    [SerializeField] private float dropDistanceMultiplier = 1f;
+    [FormerlySerializedAs("dropDistanceMultiplier")]
+    [Tooltip("릴 너비에 대한 심볼 이동 거리 배율입니다.")]
+    [SerializeField] private float slideDistanceMultiplier = 1f;
 
     private List<ReelSymbolData> symbolPool;
     private Image incomingImage;
@@ -65,7 +67,7 @@ public class SlotReel : MonoBehaviour
                 break;
             }
 
-            yield return AnimateSymbolDrop(nextSymbol);
+            yield return AnimateSymbolSlide(nextSymbol);
             currentResult = nextSymbol;
 
             if (stopRequested)
@@ -86,7 +88,7 @@ public class SlotReel : MonoBehaviour
         {
             if (!EnsureReelVisuals()) yield break;
 
-            yield return AnimateSymbolDrop(targetSymbol);
+            yield return AnimateSymbolSlide(targetSymbol);
             currentResult = targetSymbol;
             yield break;
         }
@@ -98,15 +100,15 @@ public class SlotReel : MonoBehaviour
             yield return null;
     }
 
-    private IEnumerator AnimateSymbolDrop(ReelSymbolData nextSymbol)
+    private IEnumerator AnimateSymbolSlide(ReelSymbolData nextSymbol)
     {
-        float distance = GetDropDistance();
+        float distance = GetSlideDistance();
         float duration = Mathf.Max(0.01f, spinSpeed);
-        Vector2 upperPosition = centerPosition + Vector2.up * distance;
-        Vector2 lowerPosition = centerPosition + Vector2.down * distance;
+        Vector2 entryPosition = centerPosition + Vector2.right * distance;
+        Vector2 exitPosition = centerPosition + Vector2.left * distance;
 
         displayRect.anchoredPosition = centerPosition;
-        incomingRect.anchoredPosition = upperPosition;
+        incomingRect.anchoredPosition = entryPosition;
         incomingImage.sprite = nextSymbol.symbolSprite;
         incomingImage.gameObject.SetActive(true);
 
@@ -116,14 +118,14 @@ public class SlotReel : MonoBehaviour
             elapsed += Time.deltaTime;
             float progress = Mathf.Clamp01(elapsed / duration);
 
-            displayRect.anchoredPosition = Vector2.Lerp(centerPosition, lowerPosition, progress);
-            incomingRect.anchoredPosition = Vector2.Lerp(upperPosition, centerPosition, progress);
+            displayRect.anchoredPosition = Vector2.Lerp(centerPosition, exitPosition, progress);
+            incomingRect.anchoredPosition = Vector2.Lerp(entryPosition, centerPosition, progress);
             yield return null;
         }
 
         displayImage.sprite = nextSymbol.symbolSprite;
         displayRect.anchoredPosition = centerPosition;
-        incomingRect.anchoredPosition = upperPosition;
+        incomingRect.anchoredPosition = entryPosition;
         incomingImage.gameObject.SetActive(false);
     }
 
@@ -174,23 +176,23 @@ public class SlotReel : MonoBehaviour
         incomingImage.raycastTarget = false;
         incomingImage.transform.SetSiblingIndex(displayImage.transform.GetSiblingIndex() + 1);
         incomingRect = incomingImage.rectTransform;
-        incomingRect.anchoredPosition = centerPosition + Vector2.up * GetDropDistance();
+        incomingRect.anchoredPosition = centerPosition + Vector2.right * GetSlideDistance();
         incomingImage.gameObject.SetActive(false);
 
         return true;
     }
 
-    private float GetDropDistance()
+    private float GetSlideDistance()
     {
         RectTransform viewport = displayRect != null
             ? displayRect.parent as RectTransform
             : null;
 
-        float height = viewport != null ? viewport.rect.height : 0f;
-        if (height <= 0f && displayRect != null)
-            height = displayRect.rect.height;
+        float width = viewport != null ? viewport.rect.width : 0f;
+        if (width <= 0f && displayRect != null)
+            width = displayRect.rect.width;
 
-        return Mathf.Max(1f, height * Mathf.Max(0.1f, dropDistanceMultiplier));
+        return Mathf.Max(1f, width * Mathf.Max(0.1f, slideDistanceMultiplier));
     }
 
     private void OnDisable()

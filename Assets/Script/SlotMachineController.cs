@@ -36,6 +36,7 @@ public class SlotMachineController : MonoBehaviour
     [SerializeField] private float baseSpinDuration = 1.0f; // 첫 번째 릴 멈출 때까지의 시간
     [SerializeField] private float reelInterval = 0.35f;     // 각 릴 간의 정지 간격
     [SerializeField] private float jackpotAnticipationDelay = 1.2f;
+    [SerializeField] private float jackpotAnticipationDelay2 = 0.5f;
 
     [Header("UI")]
     [SerializeField] private Button spinButton;
@@ -82,6 +83,7 @@ public class SlotMachineController : MonoBehaviour
 
         yield return new WaitForSeconds(baseSpinDuration);
 
+
         // 2. 가중치 기반으로 결과 미리 추첨 및 순차 정지
         for (int i = 0; i < reels.Length; i++)
         {
@@ -91,6 +93,16 @@ public class SlotMachineController : MonoBehaviour
                 JackpotAnticipationStarted?.Invoke(candidate);
                 yield return new WaitForSeconds(jackpotAnticipationDelay);
             }
+
+            if(i == reels.Length - 2 )
+            {
+                yield return new WaitForSeconds(jackpotAnticipationDelay);
+            }
+            if(i == reels.Length - 1)
+            {
+                yield return new WaitForSeconds(jackpotAnticipationDelay2);
+            }
+
 
             yield return reels[i].StopSpin(finalResults[i]);
 

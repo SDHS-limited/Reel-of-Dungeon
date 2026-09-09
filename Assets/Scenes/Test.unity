@@ -301,7 +301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlotReel
   displayImage: {fileID: 1501270607}
   spinSpeed: 0.05
-  dropDistanceMultiplier: 1
+  slideDistanceMultiplier: 1
 --- !u!1 &184529365
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlotReel
   displayImage: {fileID: 1664212286}
   spinSpeed: 0.05
-  dropDistanceMultiplier: 1
+  slideDistanceMultiplier: 1
 --- !u!1 &252210196
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,7 +762,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlotReel
   displayImage: {fileID: 1727909041}
   spinSpeed: 0.05
-  dropDistanceMultiplier: 1
+  slideDistanceMultiplier: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1309,7 +1309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlotReel
   displayImage: {fileID: 252210197}
   spinSpeed: 0.05
-  dropDistanceMultiplier: 1
+  slideDistanceMultiplier: 1
 --- !u!1 &1501270606
 GameObject:
   m_ObjectHideFlags: 0
@@ -1573,7 +1573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlotReel
   displayImage: {fileID: 115813339}
   spinSpeed: 0.05
-  dropDistanceMultiplier: 1
+  slideDistanceMultiplier: 1
 --- !u!1 &1664212285
 GameObject:
   m_ObjectHideFlags: 0
