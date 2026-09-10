@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public enum SynergyTier
 {
@@ -41,11 +42,25 @@ public class SlotMachineController : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Button spinButton;
 
+    [Header("Turn UI")]
+    [SerializeField] private TMP_Text currentTurnText;
+    // 기존 씬에 연결된 개별 카운터는 공용 표시로 이전한 뒤 숨긴다.
+    [SerializeField, HideInInspector] private TMP_Text playerTurnCountText;
+    [SerializeField, HideInInspector] private TMP_Text enemyTurnCountText;
+    [SerializeField, Min(0f)] private float enemyTurnDisplayDuration = 1f;
+
+    public int PlayerTurnCount { get; private set; }
+    public int EnemyTurnCount { get; private set; }
+    public bool IsPlayerTurn { get; private set; }
+
     private bool isBusy = false;
 
     private void Start()
     {
         if (!ValidateSetup()) return;
+
+        EnsureTurnUI();
+        BeginPlayerTurn();
 
         foreach (var reel in reels)
         {
@@ -60,7 +75,7 @@ public class SlotMachineController : MonoBehaviour
 
     public void OnSpinButtonClicked()
     {
-        if (isBusy || !ValidateSetup()) return;
+        if (isBusy || !IsPlayerTurn || !isActiveAndEnabled || !ValidateSetup()) return;
         StartCoroutine(ExecuteSlotRoutine());
     }
 
@@ -93,7 +108,7 @@ public class SlotMachineController : MonoBehaviour
                 JackpotAnticipationStarted?.Invoke(candidate);
                 yield return new WaitForSeconds(jackpotAnticipationDelay);
             }
-
+            
             if(i == reels.Length - 2 )
             {
                 yield return new WaitForSeconds(jackpotAnticipationDelay);
@@ -113,9 +128,83 @@ public class SlotMachineController : MonoBehaviour
         // 3. 결과 판정 및 스킬 발동
         EvaluateTurnResults(finalResults);
 
+        IsPlayerTurn = false;
+        EnemyTurnCount++;
+        RefreshTurnUI();
+        // 적 행동 시스템을 연결하기 전까지 턴 표시 시간을 확보한다.
+        yield return new WaitForSeconds(Mathf.Max(0f, enemyTurnDisplayDuration));
+        BeginPlayerTurn();
+
         isBusy = false;
         if (spinButton != null)
             spinButton.interactable = true;
+    }
+
+    private void BeginPlayerTurn()
+    {
+        IsPlayerTurn = true;
+        PlayerTurnCount++;
+        RefreshTurnUI();
+    }
+
+    private void RefreshTurnUI()
+    {
+        if (currentTurnText != null)
+        {
+            currentTurnText.text = IsPlayerTurn
+                ? $"Player Turn: {PlayerTurnCount}"
+                : $"Enemy Turn: {EnemyTurnCount}";
+            currentTurnText.color = IsPlayerTurn
+                ? new Color(0.4f, 0.8f, 1f)
+                : new Color(1f, 0.45f, 0.4f);
+        }
+
+    }
+
+    private void EnsureTurnUI()
+    {
+        if (currentTurnText == null)
+            currentTurnText = playerTurnCountText != null ? playerTurnCountText : enemyTurnCountText;
+        if (playerTurnCountText != null && playerTurnCountText != currentTurnText)
+            playerTurnCountText.enabled = false;
+        if (enemyTurnCountText != null && enemyTurnCountText != currentTurnText)
+            enemyTurnCountText.enabled = false;
+        if (currentTurnText != null)
+        {
+            currentTurnText.enabled = true;
+            return;
+        }
+
+        Canvas canvas = spinButton != null ? spinButton.GetComponentInParent<Canvas>() : null;
+        if (canvas == null && reels.Length > 0)
+            canvas = reels[0].GetComponentInParent<Canvas>();
+        if (canvas == null)
+        {
+            Debug.LogWarning("턴 텍스트를 표시할 Canvas를 찾지 못했습니다. Turn UI 참조를 연결하세요.", this);
+            return;
+        }
+
+        if (currentTurnText == null)
+            currentTurnText = CreateTurnText(canvas.transform, "Current Turn", new Vector2(0f, -35f), 32);
+    }
+
+    private TMP_Text CreateTurnText(Transform parent, string objectName, Vector2 position, int fontSize)
+    {
+        GameObject label = new GameObject(objectName, typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+        label.layer = parent.gameObject.layer;
+        label.transform.SetParent(parent, false);
+        TMP_Text text = label.GetComponent<TextMeshProUGUI>();
+        text.font = TMP_Settings.defaultFontAsset;
+        text.fontSize = fontSize;
+        text.alignment = TextAlignmentOptions.Center;
+        text.color = Color.white;
+        text.raycastTarget = false;
+        RectTransform rect = text.rectTransform;
+        rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 1f);
+        rect.pivot = new Vector2(0.5f, 1f);
+        rect.sizeDelta = new Vector2(320f, 46f);
+        rect.anchoredPosition = position;
+        return text;
     }
 
     private ReelSymbolData PickSymbolByWeight()

@@ -1781,7 +1781,7 @@ MonoBehaviour:
     baseValue: 3
     comboBonus: 9
     megaBonus: 30
-    weight: 48
+    weight: 51
   - symbolName: Mana Shield
     symbolType: 1
     symbolSprite: {fileID: 218114691466649536, guid: 1d1cff6c7eda9c941b293facd16f16a1, type: 3}
@@ -1798,7 +1798,8 @@ MonoBehaviour:
     weight: 50
   baseSpinDuration: 1
   reelInterval: 0.5
-  jackpotAnticipationDelay: 1.5
+  jackpotAnticipationDelay: 0.3
+  jackpotAnticipationDelay2: 0.5
   spinButton: {fileID: 309054107}
 --- !u!1 &2140892853
 GameObject:
