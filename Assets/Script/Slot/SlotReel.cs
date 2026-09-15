@@ -57,7 +57,10 @@ public class SlotReel : MonoBehaviour
     {
         while (isSpinning)
         {
-            ReelSymbolData nextSymbol = stopRequested
+            // 이동 도중 들어온 정지 요청은 다음 이동에서 처리한다.
+            // 이번 이동이 확정 심볼을 표시하는 이동인지 먼저 기록해야 한다.
+            bool isFinalSlide = stopRequested;
+            ReelSymbolData nextSymbol = isFinalSlide
                 ? stopTarget
                 : PickRandomSymbol();
 
@@ -70,7 +73,7 @@ public class SlotReel : MonoBehaviour
             yield return AnimateSymbolSlide(nextSymbol);
             currentResult = nextSymbol;
 
-            if (stopRequested)
+            if (isFinalSlide)
             {
                 stopRequested = false;
                 isSpinning = false;
