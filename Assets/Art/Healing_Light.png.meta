@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0726489078efc094a8fafbf79c69c0ea
+guid: f2308f416342cb345baa3dfd10fc956f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2388437175571326629
-    second: magic_2_0
+      213: 4877069521260523922
+    second: Healing_Light_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: magic_2_0
+      name: Healing_Light_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b59dbb51b019aded0800000000000000
-      internalID: -2388437175571326629
+      spriteID: 2913e97c3e4dea340800000000000000
+      internalID: 4877069521260523922
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      magic_2_0: -2388437175571326629
+      Healing_Light_0: 4877069521260523922
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

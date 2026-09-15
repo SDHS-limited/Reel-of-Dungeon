@@ -20,8 +20,17 @@ MonoBehaviour:
     rid: 6754712569872122205
   m_ActivePlatformGuid: 
   m_AdditionalPlatformBuildSettings: []
-  m_OverrideGlobalSceneList: 0
-  m_Scenes: []
+  m_OverrideGlobalSceneList: 1
+  m_Scenes:
+  - m_enabled: 1
+    m_path: Assets/Scenes/Title.unity
+    m_guid: 66c44bbb18f736043a85f0c69517fd2a
+  - m_enabled: 1
+    m_path: Assets/Scenes/Selete.unity
+    m_guid: 12f1e22970c124044a5164046a6528a4
+  - m_enabled: 1
+    m_path: Assets/Scenes/Ingame.unity
+    m_guid: d987f6c10d95bf24982ee6167838dd7a
   m_HasScriptingDefines: 0
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
@@ -69,8 +78,8 @@ MonoBehaviour:
     - line: '|   m_VirtualRealitySplashScreen: {instanceID: 0}'
     - line: '|   defaultScreenWidth: 1920'
     - line: '|   defaultScreenHeight: 1080'
-    - line: '|   defaultScreenWidthWeb: 960'
-    - line: '|   defaultScreenHeightWeb: 600'
+    - line: '|   defaultScreenWidthWeb: 640'
+    - line: '|   defaultScreenHeightWeb: 360'
     - line: '|   m_StereoRenderingPath: 0'
     - line: '|   m_ActiveColorSpace: 1'
     - line: '|   unsupportedMSAAFallback: 0'
@@ -113,7 +122,7 @@ MonoBehaviour:
     - line: '|   androidApplicationEntry: 2'
     - line: '|   defaultIsNativeResolution: 1'
     - line: '|   macRetinaSupport: 1'
-    - line: '|   runInBackground: 0'
+    - line: '|   runInBackground: 1'
     - line: '|   muteOtherAudioSources: 0'
     - line: '|   Prepare IOS For Recording: 0'
     - line: '|   Force IOS Speakers When Recording: 0'
@@ -417,7 +426,10 @@ MonoBehaviour:
     - line: '|       m_Height: 36'
     - line: '|       m_Kind: 0'
     - line: '|       m_SubKind: '
-    - line: '|   m_BuildTargetBatching: []'
+    - line: '|   m_BuildTargetBatching:'
+    - line: '|   - m_BuildTarget: WebGL'
+    - line: '|     m_StaticBatching: 0'
+    - line: '|     m_DynamicBatching: 0'
     - line: '|   m_BuildTargetShaderSettings: []'
     - line: '|   m_BuildTargetGraphicsJobs: []'
     - line: '|   m_BuildTargetGraphicsJobMode: []'
@@ -688,7 +700,7 @@ MonoBehaviour:
     - line: '|   webGLDebugSymbols: 0'
     - line: '|   webGLEmscriptenArgs: '
     - line: '|   webGLModulesDirectory: '
-    - line: '|   webGLTemplate: APPLICATION:Default'
+    - line: '|   webGLTemplate: PROJECT:poki-template'
     - line: '|   webGLAnalyzeBuildSize: 0'
     - line: '|   webGLUseEmbeddedResources: 0'
     - line: '|   webGLCompressionFormat: 0'
