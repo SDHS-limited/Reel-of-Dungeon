@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class SlotReel : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private Image displayImage;
+    [SerializeField] private TMP_Text displayName;
 
     [Header("Settings")]
     [Tooltip("심볼 하나가 오른쪽에서 중앙으로 들어오는 시간입니다.")]
@@ -40,7 +42,7 @@ public class SlotReel : MonoBehaviour
         if (initialSymbol == null) return;
 
         currentResult = initialSymbol;
-        displayImage.sprite = initialSymbol.symbolSprite;
+        SetDisplayedSymbol(initialSymbol);
     }
 
     public void StartSpin()
@@ -126,10 +128,18 @@ public class SlotReel : MonoBehaviour
             yield return null;
         }
 
-        displayImage.sprite = nextSymbol.symbolSprite;
+        SetDisplayedSymbol(nextSymbol);
         displayRect.anchoredPosition = centerPosition;
         incomingRect.anchoredPosition = entryPosition;
         incomingImage.gameObject.SetActive(false);
+    }
+
+    private void SetDisplayedSymbol(ReelSymbolData symbol)
+    {
+        displayImage.sprite = symbol.symbolSprite;
+
+        if (displayName != null)
+            displayName.text = symbol.DisplayName;
     }
 
     private ReelSymbolData PickRandomSymbol()

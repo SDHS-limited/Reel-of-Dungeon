@@ -237,8 +237,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f0ac1ba6d4a2fb24291fc7c5312d0fc9, type: 2}
-  m_sharedMaterial: {fileID: 6819349514934413325, guid: f0ac1ba6d4a2fb24291fc7c5312d0fc9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 964d3e544877f7345a4a193e2750c8f8, type: 2}
+  m_sharedMaterial: {fileID: -7321278918324937877, guid: 964d3e544877f7345a4a193e2750c8f8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -262,8 +262,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 90
-  m_fontSizeBase: 90
+  m_fontSize: 81
+  m_fontSizeBase: 81
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -664,8 +664,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Start
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f0ac1ba6d4a2fb24291fc7c5312d0fc9, type: 2}
-  m_sharedMaterial: {fileID: 6819349514934413325, guid: f0ac1ba6d4a2fb24291fc7c5312d0fc9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 964d3e544877f7345a4a193e2750c8f8, type: 2}
+  m_sharedMaterial: {fileID: -7321278918324937877, guid: 964d3e544877f7345a4a193e2750c8f8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -689,8 +689,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 90
-  m_fontSizeBase: 90
+  m_fontSize: 81
+  m_fontSizeBase: 81
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -858,8 +858,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Setting
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f0ac1ba6d4a2fb24291fc7c5312d0fc9, type: 2}
-  m_sharedMaterial: {fileID: 6819349514934413325, guid: f0ac1ba6d4a2fb24291fc7c5312d0fc9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 964d3e544877f7345a4a193e2750c8f8, type: 2}
+  m_sharedMaterial: {fileID: -7321278918324937877, guid: 964d3e544877f7345a4a193e2750c8f8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -883,8 +883,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 90
-  m_fontSizeBase: 90
+  m_fontSize: 81
+  m_fontSizeBase: 81
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -995,8 +995,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Reel of Dungeon
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f0ac1ba6d4a2fb24291fc7c5312d0fc9, type: 2}
-  m_sharedMaterial: {fileID: 6819349514934413325, guid: f0ac1ba6d4a2fb24291fc7c5312d0fc9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 964d3e544877f7345a4a193e2750c8f8, type: 2}
+  m_sharedMaterial: {fileID: -7321278918324937877, guid: 964d3e544877f7345a4a193e2750c8f8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1020,8 +1020,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 126
-  m_fontSizeBase: 126
+  m_fontSize: 113.4
+  m_fontSizeBase: 113.4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
