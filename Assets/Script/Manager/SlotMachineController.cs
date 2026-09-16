@@ -91,8 +91,14 @@ public class RoomEnemySettings
 public class RoomBattleSettings
 {
     [Min(1)] public int roomNumber = 1;
+
+    [Range(1, 3)]
+    [Tooltip("이 방에 배치할 적의 수입니다. 1~3명을 지원합니다.")]
+    public int enemyCount = 2;
+
     public RoomEnemySettings enemy = new RoomEnemySettings();
     public RoomEnemySettings enemy2 = new RoomEnemySettings();
+    public RoomEnemySettings enemy3 = new RoomEnemySettings();
 }
 
 
@@ -130,7 +136,7 @@ public class SlotMachineController : MonoBehaviour
     // ========================================================
 
     [Header("Room Battle Settings")]
-    [Tooltip("방 번호마다 Enemy와 Enemy (1)의 배치, 체력, 공격력을 설정합니다.")]
+    [Tooltip("방 번호마다 적의 수, 배치, 체력, 공격력을 설정합니다.")]
     [SerializeField]
     private List<RoomBattleSettings> roomBattleSettings =
         new List<RoomBattleSettings>
@@ -164,6 +170,12 @@ public class SlotMachineController : MonoBehaviour
 
     [SerializeField]
     private Button spinButton;
+
+    [SerializeField, Min(1f)]
+    private float spinButtonBorderWidth = 6f;
+
+    [SerializeField]
+    private Color spinButtonBorderColor = new Color(1f, 0.82f, 0.12f, 1f);
 
     [Tooltip("릴과 SPIN 버튼을 포함하는 Slot UI")]
     [SerializeField]
@@ -247,6 +259,8 @@ public class SlotMachineController : MonoBehaviour
             slotUIRoot =
                 spinButton.transform.parent as RectTransform;
         }
+
+        EnsureSpinButtonBorder();
 
         if (slotUIRoot != null)
         {
@@ -688,23 +702,28 @@ public class SlotMachineController : MonoBehaviour
                     spellHand.HUD.NextStageRequested
             );
 
+            int nextRoom = spellHand.HUD.Stage + 1;
+            RoomBattleSettings nextRoomSettings =
+                GetRoomBattleSettings(nextRoom);
 
-            spellHand.AdvanceStage();
-
-
-            PlayerTurnCount = 0;
-
-            EnemyTurnCount = 0;
-
-
-            BeginPlayerTurn();
-
-            yield return ShowTurnBanner();
-
-
-            ResetSlotState();
-
-            SetSlotUIVisible(true);
+            if (nextRoomSettings != null)
+            {
+                RoomSelectionState.Unlock(nextRoom);
+                RoomSelectionState.Select(nextRoom);
+                CircularSceneTransition.Begin(
+                    gameObject.scene.name,
+                    0.4f,
+                    0.7f
+                );
+            }
+            else
+            {
+                CircularSceneTransition.Begin(
+                    "Selete",
+                    0.4f,
+                    0.7f
+                );
+            }
 
             yield break;
         }
@@ -964,6 +983,80 @@ public class SlotMachineController : MonoBehaviour
         {
             legacy.text = text;
         }
+    }
+
+
+    private void EnsureSpinButtonBorder()
+    {
+        if (spinButton == null)
+            return;
+
+        RectTransform buttonRect = spinButton.transform as RectTransform;
+        if (buttonRect == null || buttonRect.Find("Yellow Border Top") != null)
+            return;
+
+        CreateSpinButtonBorderEdge(
+            buttonRect,
+            "Yellow Border Top",
+            new Vector2(0f, 1f),
+            new Vector2(1f, 1f),
+            new Vector2(0f, -spinButtonBorderWidth * 0.5f),
+            new Vector2(0f, spinButtonBorderWidth)
+        );
+        CreateSpinButtonBorderEdge(
+            buttonRect,
+            "Yellow Border Bottom",
+            new Vector2(0f, 0f),
+            new Vector2(1f, 0f),
+            new Vector2(0f, spinButtonBorderWidth * 0.5f),
+            new Vector2(0f, spinButtonBorderWidth)
+        );
+        CreateSpinButtonBorderEdge(
+            buttonRect,
+            "Yellow Border Left",
+            new Vector2(0f, 0f),
+            new Vector2(0f, 1f),
+            new Vector2(spinButtonBorderWidth * 0.5f, 0f),
+            new Vector2(spinButtonBorderWidth, 0f)
+        );
+        CreateSpinButtonBorderEdge(
+            buttonRect,
+            "Yellow Border Right",
+            new Vector2(1f, 0f),
+            new Vector2(1f, 1f),
+            new Vector2(-spinButtonBorderWidth * 0.5f, 0f),
+            new Vector2(spinButtonBorderWidth, 0f)
+        );
+    }
+
+
+    private void CreateSpinButtonBorderEdge(
+        RectTransform parent,
+        string edgeName,
+        Vector2 anchorMin,
+        Vector2 anchorMax,
+        Vector2 anchoredPosition,
+        Vector2 sizeDelta)
+    {
+        GameObject edgeObject = new GameObject(
+            edgeName,
+            typeof(RectTransform),
+            typeof(CanvasRenderer),
+            typeof(Image)
+        );
+        edgeObject.layer = parent.gameObject.layer;
+
+        RectTransform edge = edgeObject.GetComponent<RectTransform>();
+        edge.SetParent(parent, false);
+        edge.anchorMin = anchorMin;
+        edge.anchorMax = anchorMax;
+        edge.anchoredPosition = anchoredPosition;
+        edge.sizeDelta = sizeDelta;
+        edge.SetAsLastSibling();
+
+        Image image = edgeObject.GetComponent<Image>();
+        image.color = spinButtonBorderColor;
+        image.raycastTarget = false;
     }
 
 

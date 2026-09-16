@@ -120,7 +120,7 @@ public class SeleteManager : MonoBehaviour
     {
         if (starting) return;
         RoomSelectionState.ResetProgress();
-        if (Application.isPlaying && canvas != null && rooms != null && rooms.Length > 0 && Input.GetKey(KeyCode.LeftShift))
+        if (Application.isPlaying && canvas != null && rooms != null && rooms.Length > 0)
         {
             int firstRoom = Array.FindIndex(rooms, room => room.roomNumber == 1);
             SelectRoom(Mathf.Max(0, firstRoom));

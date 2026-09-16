@@ -17,6 +17,23 @@ public class SpellResultCard : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private Vector2 min, max, size, position;
     private int sibling, pointer;
     private bool dragging;
+    private Outline firstCardOutline;
+
+    public SymbolResolution Result => result;
+
+    public void SetFirstCardHighlight(bool highlighted)
+    {
+        if (firstCardOutline == null)
+        {
+            firstCardOutline = gameObject.AddComponent<Outline>();
+
+            firstCardOutline.effectColor = new Color(1f, 0.82f, 0.12f, 1f);
+            firstCardOutline.effectDistance = new Vector2(5f, -5f);
+            firstCardOutline.useGraphicAlpha = false;
+        }
+
+        firstCardOutline.enabled = highlighted;
+    }
 
     public void Initialize(SpellResultHand hand, SymbolResolution spell, Canvas root)
     {
