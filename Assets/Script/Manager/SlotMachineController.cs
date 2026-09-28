@@ -161,6 +161,17 @@ public class SlotMachineController : MonoBehaviour
     [SerializeField]
     private float jackpotAnticipationDelay = 1.2f;
 
+    [Tooltip("STOP 입력 후 다음 릴을 정지하기까지의 간격")]
+    [SerializeField, Min(0f)]
+    private float automaticStopInterval = 0.12f;
+
+    [Header("Reel Stop Camera Shake")]
+    [SerializeField, Min(0.01f)]
+    private float reelStopShakeDuration = 0.08f;
+
+    [SerializeField, Min(0f)]
+    private float reelStopShakeMagnitude = 0.055f;
+
 
     // ========================================================
     // UI
@@ -176,6 +187,18 @@ public class SlotMachineController : MonoBehaviour
 
     [SerializeField]
     private Color spinButtonBorderColor = new Color(1f, 0.82f, 0.12f, 1f);
+
+    [Header("Spin Button Idle Animation")]
+    [SerializeField, Min(0f)]
+    private float spinButtonIdleDistance = 10f;
+
+    [SerializeField, Min(0.1f)]
+    private float spinButtonIdleCyclesPerSecond = 1.4f;
+
+    private RectTransform spinButtonRect;
+    private Vector2 spinButtonBasePosition;
+    private Animator spinButtonAnimator;
+    private Coroutine spinButtonIdleRoutine;
 
     [Tooltip("릴과 SPIN 버튼을 포함하는 Slot UI")]
     [SerializeField]
@@ -229,6 +252,9 @@ public class SlotMachineController : MonoBehaviour
     // 릴 하나가 현재 정지 애니메이션 중
     private bool isStoppingReel = false;
 
+    // STOP을 한 번 누른 후 남은 릴을 순차적으로 정지하는 중
+    private bool isAutoStoppingReels = false;
+
     // 현재까지 정지한 릴 개수
     private int stoppedReelCount = 0;
 
@@ -261,6 +287,14 @@ public class SlotMachineController : MonoBehaviour
         }
 
         EnsureSpinButtonBorder();
+
+        if (spinButton != null)
+        {
+            spinButtonRect = spinButton.transform as RectTransform;
+            spinButtonAnimator = spinButton.GetComponent<Animator>();
+            if (spinButtonRect != null)
+                spinButtonBasePosition = spinButtonRect.anchoredPosition;
+        }
 
         if (slotUIRoot != null)
         {
@@ -436,7 +470,6 @@ public class SlotMachineController : MonoBehaviour
         if (!isActiveAndEnabled)
             return;
 
-
         // ====================================================
         // 현재 슬롯이 회전 중이면 STOP 역할
         // ====================================================
@@ -446,15 +479,17 @@ public class SlotMachineController : MonoBehaviour
             if (!canStopReels)
                 return;
 
-            if (isStoppingReel)
+            if (isStoppingReel || isAutoStoppingReels)
                 return;
 
             if (nextReelToStop >= reels.Length)
                 return;
 
+            // STOP 입력이 승인되는 순간 버튼 흔들림을 멈춘다.
+            SetSpinButtonIdleAnimation(false);
 
             StartCoroutine(
-                StopNextReel()
+                StopAllReelsSequentially()
             );
 
             return;
@@ -497,9 +532,14 @@ public class SlotMachineController : MonoBehaviour
 
         isStoppingReel = false;
 
+        isAutoStoppingReels = false;
+
         stoppedReelCount = 0;
 
         nextReelToStop = 0;
+
+        // SPIN을 누른 뒤 STOP을 누를 때까지 버튼 애니메이션을 유지한다.
+        SetSpinButtonIdleAnimation(true);
 
 
         // 버튼을 STOP으로 변경
@@ -808,7 +848,42 @@ public class SlotMachineController : MonoBehaviour
 
 
     // ========================================================
-    // STOP 클릭 → 다음 릴 하나 정지
+    // STOP 클릭 → 남은 릴 순차 정지
+    // ========================================================
+
+    private IEnumerator StopAllReelsSequentially()
+    {
+        if (isAutoStoppingReels)
+            yield break;
+
+        isAutoStoppingReels = true;
+
+        if (spinButton != null)
+            spinButton.interactable = false;
+
+        while (
+            isSpinning &&
+            nextReelToStop < reels.Length)
+        {
+            canStopReels = true;
+            yield return StopNextReel();
+
+            if (
+                nextReelToStop < reels.Length &&
+                automaticStopInterval > 0f)
+            {
+                yield return new WaitForSecondsRealtime(
+                    automaticStopInterval
+                );
+            }
+        }
+
+        isAutoStoppingReels = false;
+    }
+
+
+    // ========================================================
+    // 다음 릴 하나 정지
     // ========================================================
 
     private IEnumerator StopNextReel()
@@ -882,6 +957,8 @@ public class SlotMachineController : MonoBehaviour
             currentSpinResults[index]
         );
 
+        PlayReelStopCameraShake();
+
 
         stoppedReelCount++;
 
@@ -899,7 +976,7 @@ public class SlotMachineController : MonoBehaviour
             canStopReels = true;
 
 
-            if (spinButton != null)
+            if (spinButton != null && !isAutoStoppingReels)
             {
                 spinButton.interactable = true;
             }
@@ -936,6 +1013,8 @@ public class SlotMachineController : MonoBehaviour
 
         isStoppingReel = false;
 
+        isAutoStoppingReels = false;
+
         stoppedReelCount = 0;
 
         nextReelToStop = 0;
@@ -944,6 +1023,8 @@ public class SlotMachineController : MonoBehaviour
         SetSpinButtonText(
             "SPIN"
         );
+
+        RefreshSpinButtonIdleAnimation();
     }
 
 
@@ -1060,6 +1141,94 @@ public class SlotMachineController : MonoBehaviour
     }
 
 
+    private void RefreshSpinButtonIdleAnimation()
+    {
+        bool shouldPlay =
+            spinButton != null &&
+            spinButton.gameObject.activeInHierarchy &&
+            spinButton.interactable &&
+            slotUIVisible &&
+            IsPlayerTurn &&
+            !isBusy &&
+            !isSpinning;
+
+        SetSpinButtonIdleAnimation(shouldPlay);
+    }
+
+
+    private void SetSpinButtonIdleAnimation(bool play)
+    {
+        if (spinButtonRect == null)
+            return;
+
+        if (
+            spinButtonAnimator != null &&
+            spinButtonAnimator.runtimeAnimatorController != null)
+        {
+            if (spinButtonAnimator.enabled == play)
+                return;
+
+            spinButtonAnimator.enabled = play;
+            if (play)
+            {
+                spinButtonAnimator.Rebind();
+                spinButtonAnimator.Update(0f);
+            }
+            else
+            {
+                spinButtonRect.anchoredPosition = spinButtonBasePosition;
+            }
+            return;
+        }
+
+        if (play)
+        {
+            if (spinButtonIdleRoutine == null)
+                spinButtonIdleRoutine = StartCoroutine(AnimateSpinButtonIdle());
+            return;
+        }
+
+        if (spinButtonIdleRoutine != null)
+        {
+            StopCoroutine(spinButtonIdleRoutine);
+            spinButtonIdleRoutine = null;
+        }
+        spinButtonRect.anchoredPosition = spinButtonBasePosition;
+    }
+
+
+    private IEnumerator AnimateSpinButtonIdle()
+    {
+        float elapsed = 0f;
+        while (true)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float offset = Mathf.Sin(
+                elapsed * spinButtonIdleCyclesPerSecond * Mathf.PI * 2f
+            ) * spinButtonIdleDistance;
+            spinButtonRect.anchoredPosition =
+                spinButtonBasePosition + Vector2.up * offset;
+            yield return null;
+        }
+    }
+
+
+    private void PlayReelStopCameraShake()
+    {
+        CameraShake shake = CameraShake.Instance;
+
+        if (shake == null && Camera.main != null)
+        {
+            shake = Camera.main.GetComponent<CameraShake>();
+            if (shake == null)
+                shake = Camera.main.gameObject.AddComponent<CameraShake>();
+        }
+
+        if (shake != null)
+            shake.Shake(reelStopShakeDuration, reelStopShakeMagnitude);
+    }
+
+
     // ========================================================
     // UI 표시 / 숨기기
     // ========================================================
@@ -1082,6 +1251,8 @@ public class SlotMachineController : MonoBehaviour
             spinButton.interactable =
                 visible;
         }
+
+        RefreshSpinButtonIdleAnimation();
     }
 
 

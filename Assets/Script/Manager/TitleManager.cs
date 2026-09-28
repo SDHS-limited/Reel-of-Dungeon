@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class TitleManager : MonoBehaviour
 {
     [Header("Scene Transition")]
-    [SerializeField] private string nextSceneName = "Selete";
+    [SerializeField] private string nextSceneName = "InGame";
     [SerializeField, Min(0.01f)] private float closeDuration = 0.4f;
     [SerializeField, Min(0.01f)] private float revealDuration = 0.7f;
     private bool starting;

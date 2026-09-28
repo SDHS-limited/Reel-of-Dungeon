@@ -26,9 +26,6 @@ MonoBehaviour:
     m_path: Assets/Scenes/Title.unity
     m_guid: 66c44bbb18f736043a85f0c69517fd2a
   - m_enabled: 1
-    m_path: Assets/Scenes/Selete.unity
-    m_guid: 12f1e22970c124044a5164046a6528a4
-  - m_enabled: 1
     m_path: Assets/Scenes/Ingame.unity
     m_guid: d987f6c10d95bf24982ee6167838dd7a
   m_HasScriptingDefines: 0
@@ -334,7 +331,15 @@ MonoBehaviour:
     - line: '|   AndroidAppBundleSizeToValidate: 150'
     - line: '|   AndroidReportGooglePlayAppDependencies: 1'
     - line: '|   androidSymbolsSizeThreshold: 800'
-    - line: '|   m_BuildTargetIcons: []'
+    - line: '|   m_BuildTargetIcons:'
+    - line: '|   - m_BuildTarget: '
+    - line: '|     m_Icons:'
+    - line: '|     - serializedVersion: 2'
+    - line: '|       m_Icon: {fileID: 2800000, guid: 7c3b25a755d4bce4cad9c62935b80dba,
+        type: 3}'
+    - line: '|       m_Width: 128'
+    - line: '|       m_Height: 128'
+    - line: '|       m_Kind: 0'
     - line: '|   m_BuildTargetPlatformIcons:'
     - line: '|   - m_BuildTarget: Android'
     - line: '|     m_Icons:'

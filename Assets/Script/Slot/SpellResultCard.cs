@@ -6,8 +6,12 @@ using UnityEngine.UI;
 public class SpellResultCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] private Image icon;
+    [SerializeField] private Image categoryIcon;
     [SerializeField] private TMP_Text spellName;
     [SerializeField] private TMP_Text spellValue;
+    [SerializeField] private Sprite attackCategoryIcon;
+    [SerializeField] private Sprite shieldCategoryIcon;
+    [SerializeField] private Sprite healCategoryIcon;
     public Image Icon => icon;
     private SpellResultHand owner;
     private SymbolResolution result;
@@ -37,12 +41,51 @@ public class SpellResultCard : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void Initialize(SpellResultHand hand, SymbolResolution spell, Canvas root)
     {
-        spellName.text = spell.symbol.DisplayName;
-        spellValue.text = spell.totalValue.ToString();
+        // 이름 대신 왼쪽에는 마법 그림, 오른쪽에는 종류 아이콘과 수치를 표시한다.
+        if (spellName != null)
+            spellName.gameObject.SetActive(false);
+
+        if (spellValue != null)
+        {
+            spellValue.gameObject.SetActive(true);
+            spellValue.text = spell.totalValue.ToString();
+        }
+
+        if (icon != null)
+        {
+            // 크기와 위치는 Ingame Canvas의 Card Template 설정을 그대로 사용한다.
+            icon.preserveAspect = true;
+            icon.raycastTarget = false;
+        }
+
+        if (categoryIcon != null)
+        {
+            Sprite categorySprite = GetCategoryIcon(spell.symbol.symbolType);
+            categoryIcon.sprite = categorySprite;
+            categoryIcon.gameObject.SetActive(categorySprite != null);
+            categoryIcon.preserveAspect = true;
+            categoryIcon.raycastTarget = false;
+        }
+
         owner = hand;
         result = spell;
         canvas = root;
         rect = (RectTransform)transform;
+    }
+
+    private Sprite GetCategoryIcon(SymbolType symbolType)
+    {
+        switch (symbolType)
+        {
+            case SymbolType.Attack:
+                return attackCategoryIcon;
+            case SymbolType.Shield:
+                return shieldCategoryIcon;
+            case SymbolType.Heal:
+                return healCategoryIcon;
+            default:
+                return null;
+        }
     }
 
     public void OnBeginDrag(PointerEventData data)

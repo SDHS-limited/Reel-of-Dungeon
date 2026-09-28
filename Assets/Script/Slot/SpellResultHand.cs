@@ -50,6 +50,7 @@ public class SpellResultHand : MonoBehaviour
     [SerializeField] private SpellResultCard cardTemplate;
     [SerializeField] private Button endTurnButton;
     [SerializeField, Min(0f)] private float healthLabelOffset = 100f;
+    [SerializeField, Min(0f)] private float playerLabelOffset = 35f;
     [SerializeField, Min(0f)] private float characterTapPadding = 30f;
 
     [Header("Floating Combat Text")]
@@ -60,6 +61,15 @@ public class SpellResultHand : MonoBehaviour
     [Header("Camera Shake")]
     [SerializeField, Min(0.01f)] private float hitShakeDuration = 0.12f;
     [SerializeField, Min(0f)] private float hitShakeMagnitude = 0.08f;
+
+    [Header("Enemy Hit Flash")]
+    [SerializeField, Min(0.01f)] private float enemyHitFlashDuration = 0.12f;
+    [SerializeField] private Color enemyHitFlashColor = new Color(1f, 0.18f, 0.18f, 1f);
+
+    [Header("Player Magic Flash")]
+    [SerializeField, Min(0.01f)] private float playerMagicFlashDuration = 0.16f;
+    [SerializeField] private Color healFlashColor = new Color(0.45f, 1f, 0.35f, 1f);
+    [SerializeField] private Color shieldFlashColor = new Color(0.25f, 0.65f, 1f, 1f);
 
     [Header("Attack Animation")]
     [SerializeField, Min(0.1f)] private float wizardScale = 4.5f;
@@ -75,6 +85,8 @@ public class SpellResultHand : MonoBehaviour
     private RuntimeAnimatorController playerAttackController;
     private int activePlayerAttackAnimations;
     private int pendingAttackImpacts;
+    private Coroutine playerMagicFlashRoutine;
+    private Color playerColorBeforeMagicFlash;
 
     private Canvas canvas;
     [SerializeField] private RectTransform hand;
@@ -582,6 +594,8 @@ public class SpellResultHand : MonoBehaviour
                     $"+{value}",
                     new Color(0.15f, 0.82f, 1f)
                 );
+                if (value > 0)
+                    PlayPlayerMagicFlash(shieldFlashColor);
 
                 break;
 
@@ -596,11 +610,15 @@ public class SpellResultHand : MonoBehaviour
                         PlayerHP + value
                     );
 
+                int appliedHealing = PlayerHP - previousPlayerHealth;
+
                 ShowFloatingCombatText(
                     player,
-                    $"+{PlayerHP - previousPlayerHealth}",
+                    $"+{appliedHealing}",
                     new Color(0.25f, 1f, 0.35f)
                 );
+                if (appliedHealing > 0)
+                    PlayPlayerMagicFlash(healFlashColor);
 
                 break;
 
@@ -1177,9 +1195,61 @@ public class SpellResultHand : MonoBehaviour
             new Color(1f, 0.25f, 0.18f)
         );
         if (appliedDamage > 0)
+        {
+            StartCoroutine(EnemyHitFlashRoutine(target));
             ShakeCamera();
+        }
 
         RefreshStats();
+    }
+
+
+    private IEnumerator EnemyHitFlashRoutine(SpriteRenderer target)
+    {
+        if (target == null)
+            yield break;
+
+        Color originalColor = target.color;
+        Color flashColor = enemyHitFlashColor;
+        flashColor.a = originalColor.a;
+        target.color = flashColor;
+
+        yield return new WaitForSecondsRealtime(enemyHitFlashDuration);
+
+        if (target != null)
+            target.color = originalColor;
+    }
+
+
+    private void PlayPlayerMagicFlash(Color flashColor)
+    {
+        if (player == null)
+            return;
+
+        if (playerMagicFlashRoutine != null)
+        {
+            StopCoroutine(playerMagicFlashRoutine);
+            player.color = playerColorBeforeMagicFlash;
+        }
+
+        playerColorBeforeMagicFlash = player.color;
+        playerMagicFlashRoutine = StartCoroutine(
+            PlayerMagicFlashRoutine(flashColor)
+        );
+    }
+
+
+    private IEnumerator PlayerMagicFlashRoutine(Color flashColor)
+    {
+        flashColor.a = playerColorBeforeMagicFlash.a;
+        player.color = flashColor;
+
+        yield return new WaitForSecondsRealtime(playerMagicFlashDuration);
+
+        if (player != null)
+            player.color = playerColorBeforeMagicFlash;
+
+        playerMagicFlashRoutine = null;
     }
 
 
@@ -1480,7 +1550,7 @@ public class SpellResultHand : MonoBehaviour
         PositionLabel(
             playerLabel,
             player,
-            healthLabelOffset
+            playerLabelOffset
         );
 
 
