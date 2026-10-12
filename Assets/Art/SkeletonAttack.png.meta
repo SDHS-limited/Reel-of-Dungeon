@@ -1,0 +1,919 @@
+fileFormatVersion: 2
+guid: 57825eafafee76b43b266d17f388d62e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1003526169788388636
+    second: SkeletonAttack_0
+  - first:
+      213: -6067433604985971107
+    second: SkeletonAttack_1
+  - first:
+      213: 6998320622276768452
+    second: SkeletonAttack_2
+  - first:
+      213: 6351813443586983450
+    second: SkeletonAttack_3
+  - first:
+      213: -8774163766112634068
+    second: SkeletonAttack_4
+  - first:
+      213: -5703335002854178103
+    second: SkeletonAttack_5
+  - first:
+      213: -6410131532513703490
+    second: SkeletonAttack_6
+  - first:
+      213: -1444616491127110605
+    second: SkeletonAttack_7
+  - first:
+      213: 5348490929694382949
+    second: SkeletonAttack_8
+  - first:
+      213: -3460507605827764011
+    second: SkeletonAttack_9
+  - first:
+      213: 5828656635149748331
+    second: SkeletonAttack_10
+  - first:
+      213: -512110792014731890
+    second: SkeletonAttack_11
+  - first:
+      213: -7660148674477636822
+    second: SkeletonAttack_12
+  - first:
+      213: -2703575757687139956
+    second: SkeletonAttack_13
+  - first:
+      213: -4534682994215146347
+    second: SkeletonAttack_14
+  - first:
+      213: 4432307370950129862
+    second: SkeletonAttack_15
+  - first:
+      213: 6216568725664805926
+    second: SkeletonAttack_16
+  - first:
+      213: -6562313669647316910
+    second: SkeletonAttack_17
+  - first:
+      213: -6368224635275459653
+    second: SkeletonAttack_18
+  - first:
+      213: 4876177631997295599
+    second: SkeletonAttack_19
+  - first:
+      213: 8594715811583867686
+    second: SkeletonAttack_20
+  - first:
+      213: -5558704080634717347
+    second: SkeletonAttack_21
+  - first:
+      213: -7729321293933578901
+    second: SkeletonAttack_22
+  - first:
+      213: -4152274340760928189
+    second: SkeletonAttack_23
+  - first:
+      213: -1642589034483014760
+    second: SkeletonAttack_24
+  - first:
+      213: -3844813859088770711
+    second: SkeletonAttack_25
+  - first:
+      213: 822245620937083650
+    second: SkeletonAttack_26
+  - first:
+      213: -3877023889960898424
+    second: SkeletonAttack_27
+  - first:
+      213: -6184284462535645282
+    second: SkeletonAttack_28
+  - first:
+      213: 3251116240465542396
+    second: SkeletonAttack_29
+  - first:
+      213: 1007042676195035617
+    second: SkeletonAttack_30
+  - first:
+      213: 7180633233279160524
+    second: SkeletonAttack_31
+  - first:
+      213: -8723163761302261814
+    second: SkeletonAttack_32
+  - first:
+      213: -7637525472920722604
+    second: SkeletonAttack_33
+  - first:
+      213: 8618221632706966718
+    second: SkeletonAttack_34
+  - first:
+      213: 2298214979479619057
+    second: SkeletonAttack_35
+  - first:
+      213: 786094603229481161
+    second: SkeletonAttack_36
+  - first:
+      213: 1559218749387258056
+    second: SkeletonAttack_37
+  - first:
+      213: 5166572581530034535
+    second: SkeletonAttack_38
+  - first:
+      213: -3697496477841944720
+    second: SkeletonAttack_39
+  - first:
+      213: -1603276351294463808
+    second: SkeletonAttack_40
+  - first:
+      213: -3522382818474442033
+    second: SkeletonAttack_41
+  - first:
+      213: -1085733895610847331
+    second: SkeletonAttack_42
+  - first:
+      213: -3961971335753212407
+    second: SkeletonAttack_43
+  - first:
+      213: 1017488317925213994
+    second: SkeletonAttack_44
+  - first:
+      213: 903689923484166153
+    second: SkeletonAttack_45
+  - first:
+      213: 3900154758430497673
+    second: SkeletonAttack_46
+  - first:
+      213: 2619638039964428434
+    second: SkeletonAttack_47
+  - first:
+      213: -1021697304179734761
+    second: SkeletonAttack_48
+  - first:
+      213: -5690902879727659179
+    second: SkeletonAttack_49
+  - first:
+      213: -2795877816315401602
+    second: SkeletonAttack_50
+  - first:
+      213: -4933224493581954554
+    second: SkeletonAttack_51
+  - first:
+      213: 289340252461949735
+    second: SkeletonAttack_52
+  - first:
+      213: 2428904570426248813
+    second: SkeletonAttack_53
+  - first:
+      213: 2368052150827391863
+    second: SkeletonAttack_54
+  - first:
+      213: -6117335984380921058
+    second: SkeletonAttack_55
+  - first:
+      213: -1690481174890313458
+    second: SkeletonAttack_56
+  - first:
+      213: 6270765652082672527
+    second: SkeletonAttack_57
+  - first:
+      213: 2172108547096948688
+    second: SkeletonAttack_58
+  - first:
+      213: -7939519182868573916
+    second: SkeletonAttack_59
+  - first:
+      213: 6704983404641637531
+    second: SkeletonAttack_60
+  - first:
+      213: 82037497626426476
+    second: SkeletonAttack_61
+  - first:
+      213: -1943627738834219320
+    second: SkeletonAttack_62
+  - first:
+      213: -3537936450023815033
+    second: SkeletonAttack_63
+  - first:
+      213: 5052449727615334286
+    second: SkeletonAttack_64
+  - first:
+      213: 2094166015881569113
+    second: SkeletonAttack_65
+  - first:
+      213: 5655230164163147177
+    second: SkeletonAttack_66
+  - first:
+      213: -4912363706398212199
+    second: SkeletonAttack_67
+  - first:
+      213: -2477092449171642528
+    second: SkeletonAttack_68
+  - first:
+      213: -3321721447129075647
+    second: SkeletonAttack_69
+  - first:
+      213: 3484120155668799228
+    second: SkeletonAttack_70
+  - first:
+      213: -7800788101560465707
+    second: SkeletonAttack_71
+  - first:
+      213: -4114706338975615866
+    second: SkeletonAttack_72
+  - first:
+      213: 5888186405500064123
+    second: SkeletonAttack_73
+  - first:
+      213: -8836617302796816955
+    second: SkeletonAttack_74
+  - first:
+      213: 6548847082941496352
+    second: SkeletonAttack_75
+  - first:
+      213: 9095866904077792158
+    second: SkeletonAttack_76
+  - first:
+      213: -6892385862630980819
+    second: SkeletonAttack_77
+  - first:
+      213: 5853403282138223025
+    second: SkeletonAttack_78
+  - first:
+      213: -561355668497416949
+    second: SkeletonAttack_79
+  - first:
+      213: 203476108483879503
+    second: SkeletonAttack_80
+  - first:
+      213: -3624199921937285841
+    second: SkeletonAttack_81
+  - first:
+      213: 2664220759400656191
+    second: SkeletonAttack_82
+  - first:
+      213: -867312870029503666
+    second: SkeletonAttack_83
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 4096
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SkeletonAttack_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ea64f6f342c212f0800000000000000
+      internalID: -1003526169788388636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c2f81bf6870f1160800000000000000
+      internalID: 6998320622276768452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2bb0cfca88eb3680800000000000000
+      internalID: -8774163766112634068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb98df06553aa07a0800000000000000
+      internalID: -6410131532513703490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_8
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56b15dcb928a93a40800000000000000
+      internalID: 5348490929694382949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_10
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6803dff35c83e050800000000000000
+      internalID: 5828656635149748331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_12
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a23c413ad5fa1b590800000000000000
+      internalID: -7660148674477636822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_14
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59c2dc0b7d19111c0800000000000000
+      internalID: -4534682994215146347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_17
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2584bff6c7afde4a0800000000000000
+      internalID: -6562313669647316910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_19
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: feb77e0a8b9aba340800000000000000
+      internalID: 4876177631997295599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_21
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5bd04607148bd2b0800000000000000
+      internalID: -5558704080634717347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_23
+      rect:
+        serializedVersion: 2
+        x: 1408
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 340c9fc9c782066c0800000000000000
+      internalID: -4152274340760928189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_25
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 969d3857a2a74aac0800000000000000
+      internalID: -3844813859088770711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_27
+      rect:
+        serializedVersion: 2
+        x: 1664
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8807d2d305b023ac0800000000000000
+      internalID: -3877023889960898424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_30
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e9834c7afbb9fd00800000000000000
+      internalID: 1007042676195035617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_32
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acfa402c6c811f680800000000000000
+      internalID: -8723163761302261814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_34
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb4f515e9e21a9770800000000000000
+      internalID: 8618221632706966718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_37
+      rect:
+        serializedVersion: 2
+        x: 2176
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c83b54013573a510800000000000000
+      internalID: 1559218749387258056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_40
+      rect:
+        serializedVersion: 2
+        x: 2304
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c02f4c27a400c9e0800000000000000
+      internalID: -1603276351294463808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack_42
+      rect:
+        serializedVersion: 2
+        x: 2432
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9fa38f36c2bee0f0800000000000000
+      internalID: -1085733895610847331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 17c74654ca875404fbff1ba3fcd02476
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SkeletonAttack_0: -1003526169788388636
+      SkeletonAttack_1: -6067433604985971107
+      SkeletonAttack_10: 5828656635149748331
+      SkeletonAttack_11: -512110792014731890
+      SkeletonAttack_12: -7660148674477636822
+      SkeletonAttack_13: -2703575757687139956
+      SkeletonAttack_14: -4534682994215146347
+      SkeletonAttack_15: 4432307370950129862
+      SkeletonAttack_16: 6216568725664805926
+      SkeletonAttack_17: -6562313669647316910
+      SkeletonAttack_18: -6368224635275459653
+      SkeletonAttack_19: 4876177631997295599
+      SkeletonAttack_2: 6998320622276768452
+      SkeletonAttack_20: 8594715811583867686
+      SkeletonAttack_21: -5558704080634717347
+      SkeletonAttack_22: -7729321293933578901
+      SkeletonAttack_23: -4152274340760928189
+      SkeletonAttack_24: -1642589034483014760
+      SkeletonAttack_25: -3844813859088770711
+      SkeletonAttack_26: 822245620937083650
+      SkeletonAttack_27: -3877023889960898424
+      SkeletonAttack_28: -6184284462535645282
+      SkeletonAttack_29: 3251116240465542396
+      SkeletonAttack_3: 6351813443586983450
+      SkeletonAttack_30: 1007042676195035617
+      SkeletonAttack_31: 7180633233279160524
+      SkeletonAttack_32: -8723163761302261814
+      SkeletonAttack_33: -7637525472920722604
+      SkeletonAttack_34: 8618221632706966718
+      SkeletonAttack_35: 2298214979479619057
+      SkeletonAttack_36: 786094603229481161
+      SkeletonAttack_37: 1559218749387258056
+      SkeletonAttack_38: 5166572581530034535
+      SkeletonAttack_39: -3697496477841944720
+      SkeletonAttack_4: -8774163766112634068
+      SkeletonAttack_40: -1603276351294463808
+      SkeletonAttack_41: -3522382818474442033
+      SkeletonAttack_42: -1085733895610847331
+      SkeletonAttack_43: -3961971335753212407
+      SkeletonAttack_44: 1017488317925213994
+      SkeletonAttack_45: 903689923484166153
+      SkeletonAttack_46: 3900154758430497673
+      SkeletonAttack_47: 2619638039964428434
+      SkeletonAttack_48: -1021697304179734761
+      SkeletonAttack_49: -5690902879727659179
+      SkeletonAttack_5: -5703335002854178103
+      SkeletonAttack_50: -2795877816315401602
+      SkeletonAttack_51: -4933224493581954554
+      SkeletonAttack_52: 289340252461949735
+      SkeletonAttack_53: 2428904570426248813
+      SkeletonAttack_54: 2368052150827391863
+      SkeletonAttack_55: -6117335984380921058
+      SkeletonAttack_56: -1690481174890313458
+      SkeletonAttack_57: 6270765652082672527
+      SkeletonAttack_58: 2172108547096948688
+      SkeletonAttack_59: -7939519182868573916
+      SkeletonAttack_6: -6410131532513703490
+      SkeletonAttack_60: 6704983404641637531
+      SkeletonAttack_61: 82037497626426476
+      SkeletonAttack_62: -1943627738834219320
+      SkeletonAttack_63: -3537936450023815033
+      SkeletonAttack_64: 5052449727615334286
+      SkeletonAttack_65: 2094166015881569113
+      SkeletonAttack_66: 5655230164163147177
+      SkeletonAttack_67: -4912363706398212199
+      SkeletonAttack_68: -2477092449171642528
+      SkeletonAttack_69: -3321721447129075647
+      SkeletonAttack_7: -1444616491127110605
+      SkeletonAttack_70: 3484120155668799228
+      SkeletonAttack_71: -7800788101560465707
+      SkeletonAttack_72: -4114706338975615866
+      SkeletonAttack_73: 5888186405500064123
+      SkeletonAttack_74: -8836617302796816955
+      SkeletonAttack_75: 6548847082941496352
+      SkeletonAttack_76: 9095866904077792158
+      SkeletonAttack_77: -6892385862630980819
+      SkeletonAttack_78: 5853403282138223025
+      SkeletonAttack_79: -561355668497416949
+      SkeletonAttack_8: 5348490929694382949
+      SkeletonAttack_80: 203476108483879503
+      SkeletonAttack_81: -3624199921937285841
+      SkeletonAttack_82: 2664220759400656191
+      SkeletonAttack_83: -867312870029503666
+      SkeletonAttack_9: -3460507605827764011
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

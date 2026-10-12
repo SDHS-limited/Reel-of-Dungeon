@@ -154,15 +154,17 @@ MonoBehaviour:
   - roomNumber: 1
     dialogue: i am Best!!
   - roomNumber: 2
-    dialogue: Uu... Can you see us?
+    dialogue: We're the one.
   - roomNumber: 3
     dialogue: I can only pass when you knock me down.
   - roomNumber: 4
-    dialogue: I can only pass when you knock me down.
+    dialogue: (Sticky sound)
   startRoomNumber: 1
   defaultDialogue: 
   charactersPerSecond: 17.9
   displayDuration: 1
+  openingStartScale: 0.2
+  openingDuration: 0.4
   onBattleStart:
     m_PersistentCalls:
       m_Calls:
@@ -195,6 +197,136 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1469999240}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &125478060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 125478062}
+  - component: {fileID: 125478061}
+  - component: {fileID: 9100000002}
+  m_Layer: 0
+  m_Name: BackAudio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &125478061
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125478060}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: a78303900de031545bfe54fdf32f9c69, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &125478062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125478060}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1269.3229, y: 662.7951, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &155081250
 GameObject:
@@ -260,7 +392,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 90
+  m_SortingOrder: 95
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1553582051, guid: b08d02b99e443f945823a89fe47da201, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2209,8 +2341,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 624, y: 53.1}
-  m_SizeDelta: {x: 390.827, y: 102.1515}
+  m_AnchoredPosition: {x: 636, y: 44}
+  m_SizeDelta: {x: 371.9764, y: 118.9075}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1592738363
 MonoBehaviour:
@@ -2232,7 +2364,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -7533464060610849514, guid: 6f8d43db6f3339746a23d8c24b4c6488, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2415,7 +2547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1812007067
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2495,22 +2627,100 @@ MonoBehaviour:
     symbolSprite: {fileID: 4877069521260523922, guid: f2308f416342cb345baa3dfd10fc956f, type: 3}
     baseValue: 3
     comboBonus: 9
-    megaBonus: 30
-    weight: 51
+    megaBonus: 9
+    upgraded: 1
+    upgradedBaseValue: 4
+    upgradedComboBonus: 9
+    availableFromRoom: 1
+    weight: 50
   - symbolName: Mana Shield
     symbolType: 1
     symbolSprite: {fileID: -3163604781222935629, guid: b18b5f69fcd153745be564db1956070a, type: 3}
     baseValue: 5
     comboBonus: 5
     megaBonus: 20
-    weight: 25
+    upgraded: 0
+    upgradedBaseValue: 0
+    upgradedComboBonus: 0
+    availableFromRoom: 3
+    weight: 1
   - symbolName: Healing Light
     symbolType: 2
     symbolSprite: {fileID: 4777316637960683073, guid: 78aa5f64617cd994899ff0e8fd402ff3, type: 3}
     baseValue: 5
     comboBonus: 10
     megaBonus: 25
-    weight: 25
+    upgraded: 0
+    upgradedBaseValue: 0
+    upgradedComboBonus: 0
+    availableFromRoom: 1
+    weight: 26
+  - symbolName: FireBall
+    symbolType: 0
+    symbolSprite: {fileID: -6607481912129624618, guid: 9da6ab5fb223b1d49a59d7c376631d4e, type: 3}
+    baseValue: 5
+    comboBonus: 15
+    megaBonus: 30
+    upgraded: 0
+    upgradedBaseValue: 7
+    upgradedComboBonus: 0
+    availableFromRoom: 2
+    weight: 56
+  - symbolName: Dewdrop
+    symbolType: 2
+    symbolSprite: {fileID: -6986802585607365315, guid: 472ec97209312c7468bd0491b28f9069, type: 3}
+    baseValue: 6
+    comboBonus: 12
+    megaBonus: 24
+    upgraded: 0
+    upgradedBaseValue: 15
+    upgradedComboBonus: 0
+    availableFromRoom: 2
+    weight: 50
+  - symbolName: Stone Barrier
+    symbolType: 1
+    symbolSprite: {fileID: 6777361746240552688, guid: c0251166c1202ea44bb338c08db452c6, type: 3}
+    baseValue: 6
+    comboBonus: 12
+    megaBonus: 24
+    upgraded: 0
+    upgradedBaseValue: 9
+    upgradedComboBonus: 0
+    availableFromRoom: 3
+    weight: 47
+  - symbolName: Thunderbolt
+    symbolType: 0
+    symbolSprite: {fileID: 663279747372936064, guid: ed0e2a7c228b1254190d6e79dccfb926, type: 3}
+    baseValue: 6
+    comboBonus: 12
+    megaBonus: 18
+    upgraded: 0
+    upgradedBaseValue: 8
+    upgradedComboBonus: 0
+    availableFromRoom: 3
+    weight: 50
+  - symbolName: Guardian
+    symbolType: 1
+    symbolSprite: {fileID: 287197706594284169, guid: 1bc857f5870ca334f82a057da297af0b, type: 3}
+    baseValue: 9
+    comboBonus: 18
+    megaBonus: 18
+    upgraded: 0
+    upgradedBaseValue: 12
+    upgradedComboBonus: 0
+    availableFromRoom: 3
+    weight: 50
+  - symbolName: Holy_Prayer
+    symbolType: 2
+    symbolSprite: {fileID: 6567165589082381442, guid: 6933402bae16e4449aa6164c60370946, type: 3}
+    baseValue: 8
+    comboBonus: 10
+    megaBonus: 16
+    upgraded: 0
+    upgradedBaseValue: 10
+    upgradedComboBonus: 0
+    availableFromRoom: 3
+    weight: 50
   roomBattleSettings:
   - roomNumber: 1
     enemyCount: 1
@@ -2521,8 +2731,10 @@ MonoBehaviour:
       position: {x: 6.49, y: -2.4622, z: 0}
       useCustomScale: 0
       scale: {x: 2, y: 1, z: 1}
-      maxHealth: 50
-      attackDamage: 10
+      maxHealth: 30
+      attackDamage: 15
+      useNormalRestStrongPattern: 1
+      strongAttackDamage: 30
     enemy2:
       enabled: 0
       sprite: {fileID: -1553582051, guid: b08d02b99e443f945823a89fe47da201, type: 3}
@@ -2532,6 +2744,8 @@ MonoBehaviour:
       scale: {x: 1.27, y: 1, z: 1}
       maxHealth: 50
       attackDamage: 8
+      useNormalRestStrongPattern: 0
+      strongAttackDamage: 20
     enemy3:
       enabled: 1
       sprite: {fileID: 0}
@@ -2541,17 +2755,21 @@ MonoBehaviour:
       scale: {x: 1, y: 1, z: 1}
       maxHealth: 100
       attackDamage: 10
+      useNormalRestStrongPattern: 0
+      strongAttackDamage: 20
   - roomNumber: 2
     enemyCount: 2
     enemy:
       enabled: 1
-      sprite: {fileID: -3026036038996420867, guid: 63c56f9dc406cbc4aa874c5c8414e013, type: 3}
+      sprite: {fileID: -1553582051, guid: b08d02b99e443f945823a89fe47da201, type: 3}
       useCustomPosition: 1
       position: {x: 6.31, y: -2.58, z: 0}
-      useCustomScale: 1
+      useCustomScale: 0
       scale: {x: 0.5, y: 0.5, z: 0.5}
-      maxHealth: 80
-      attackDamage: 10
+      maxHealth: 30
+      attackDamage: 15
+      useNormalRestStrongPattern: 1
+      strongAttackDamage: 30
     enemy2:
       enabled: 1
       sprite: {fileID: -3026036038996420867, guid: 63c56f9dc406cbc4aa874c5c8414e013, type: 3}
@@ -2559,8 +2777,10 @@ MonoBehaviour:
       position: {x: 2.62, y: -2.44, z: 0}
       useCustomScale: 1
       scale: {x: 0.5, y: 0.5, z: 0.5}
-      maxHealth: 80
-      attackDamage: 10
+      maxHealth: 30
+      attackDamage: 15
+      useNormalRestStrongPattern: 0
+      strongAttackDamage: 20
     enemy3:
       enabled: 1
       sprite: {fileID: 0}
@@ -2570,6 +2790,8 @@ MonoBehaviour:
       scale: {x: 1, y: 1, z: 1}
       maxHealth: 100
       attackDamage: 10
+      useNormalRestStrongPattern: 0
+      strongAttackDamage: 20
   - roomNumber: 3
     enemyCount: 2
     enemy:
@@ -2579,8 +2801,10 @@ MonoBehaviour:
       position: {x: 6.49, y: -2.4622, z: 0}
       useCustomScale: 1
       scale: {x: 1, y: 1, z: 1}
-      maxHealth: 100
-      attackDamage: 12
+      maxHealth: 50
+      attackDamage: 20
+      useNormalRestStrongPattern: 0
+      strongAttackDamage: 20
     enemy2:
       enabled: 1
       sprite: {fileID: -3708508325519384304, guid: 28224b75f620a1940b6e9012f774d009, type: 3}
@@ -2588,8 +2812,10 @@ MonoBehaviour:
       position: {x: 2.62, y: -2.44, z: 0}
       useCustomScale: 1
       scale: {x: 1, y: 1, z: 1}
-      maxHealth: 100
-      attackDamage: 12
+      maxHealth: 50
+      attackDamage: 20
+      useNormalRestStrongPattern: 0
+      strongAttackDamage: 20
     enemy3:
       enabled: 0
       sprite: {fileID: 1768679433190182986, guid: 1ee9257ffcbfd0342bbbbb4817b688c6, type: 3}
@@ -2599,6 +2825,8 @@ MonoBehaviour:
       scale: {x: 1, y: 1, z: 1}
       maxHealth: 100
       attackDamage: 10
+      useNormalRestStrongPattern: 0
+      strongAttackDamage: 20
   - roomNumber: 4
     enemyCount: 3
     enemy:
@@ -2608,8 +2836,10 @@ MonoBehaviour:
       position: {x: 6.74, y: -2.4622, z: 0}
       useCustomScale: 1
       scale: {x: 1, y: 1, z: 1}
-      maxHealth: 125
-      attackDamage: 14
+      maxHealth: 60
+      attackDamage: 13
+      useNormalRestStrongPattern: 0
+      strongAttackDamage: 20
     enemy2:
       enabled: 1
       sprite: {fileID: 1768679433190182986, guid: 1ee9257ffcbfd0342bbbbb4817b688c6, type: 3}
@@ -2617,8 +2847,10 @@ MonoBehaviour:
       position: {x: 3.19, y: -2.44, z: 0}
       useCustomScale: 1
       scale: {x: 1, y: 1, z: 1}
-      maxHealth: 125
-      attackDamage: 14
+      maxHealth: 60
+      attackDamage: 13
+      useNormalRestStrongPattern: 0
+      strongAttackDamage: 20
     enemy3:
       enabled: 1
       sprite: {fileID: 1768679433190182986, guid: 1ee9257ffcbfd0342bbbbb4817b688c6, type: 3}
@@ -2626,13 +2858,17 @@ MonoBehaviour:
       position: {x: -0.66, y: -2.44, z: 0}
       useCustomScale: 1
       scale: {x: 1, y: 1, z: 1}
-      maxHealth: 125
-      attackDamage: 14
+      maxHealth: 60
+      attackDamage: 13
+      useNormalRestStrongPattern: 0
+      strongAttackDamage: 20
   baseSpinDuration: 1
   jackpotAnticipationDelay: 0.8
   automaticStopInterval: 0.6
   reelStopShakeDuration: 0.08
   reelStopShakeMagnitude: 0.055
+  reelStopSound: {fileID: 8300000, guid: a58e438b7cfa445498120af0e6169082, type: 3}
+  reelStopSoundVolume: 0.91
   spinButton: {fileID: 2101763836}
   spinButtonBorderWidth: 6
   spinButtonBorderColor: {r: 1, g: 0.82, b: 0.12, a: 1}
@@ -2708,7 +2944,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 90
+  m_SortingOrder: 99
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1553582051, guid: b08d02b99e443f945823a89fe47da201, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4713,7 +4949,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8000000061
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5470,6 +5706,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'PLAYER 100/100
+
 
     SHIELD 0 GOLD 0'
   m_isRightToLeft: 0
@@ -6326,7 +6563,6 @@ MonoBehaviour:
   enemyHPFill: {fileID: 8000000109}
   battleHUD: {fileID: 8000000051}
   cardTemplate: {fileID: 8000000085}
-  endTurnButton: {fileID: 8000000064}
   healthLabelOffset: 100
   playerLabelOffset: 35
   characterTapPadding: 30
@@ -6340,16 +6576,116 @@ MonoBehaviour:
   playerMagicFlashDuration: 0.16
   healFlashColor: {r: 0.45, g: 1, b: 0.35, a: 1}
   shieldFlashColor: {r: 0.25, g: 0.65, b: 1, a: 1}
+  playerDamageFlashColor: {r: 1, g: 0.18, b: 0.18, a: 1}
+  enemyLungeAttackSprites:
+  - {fileID: -3708508325519384304, guid: 28224b75f620a1940b6e9012f774d009, type: 3}
+  - {fileID: 1768679433190182986, guid: 1ee9257ffcbfd0342bbbbb4817b688c6, type: 3}
+  enemyLungeApproachDuration: 0.3
+  enemyLungeContactGap: 0.08
+  enemyLungeImpactPause: 0.12
+  enemyLungeReturnDuration: 0.28
+  enemyAttackSequenceDelay: 0.12
+  enemyRiseAttackSprites:
+  - {fileID: -3026036038996420867, guid: 63c56f9dc406cbc4aa874c5c8414e013, type: 3}
+  enemyRiseHeight: 1.6
+  enemyRiseDuration: 0.38
+  enemyRiseHoldDuration: 0.12
+  enemyFallDuration: 0.2
+  characterOutlineScale: 1
+  playerOutlineColor: {r: 0.2, g: 0.85, b: 1, a: 1}
+  enemyOutlineColor: {r: 1, g: 0.25, b: 0.2, a: 1}
   wizardScale: 4.5
   wizardIdleScaleMultiplier: 1.2
   wizardVerticalOffset: 0.15
   attackProjectileScale: 5
   attackFrameDuration: 0.055
   attackProjectileDuration: 0.28
+  healSound: {fileID: 8300000, guid: c48a972d3d024c2408a3331750786a29, type: 3}
+  thunderboltSound: {fileID: 8300000, guid: ab297b593498a6e47ba84de770477cbe, type: 3}
+  magicMissileSound: {fileID: 8300000, guid: 78419f98379502c4dbfb2774bc94e7c1, type: 3}
+  fireballSound: {fileID: 8300000, guid: 5e1a9f876d3dafd47bc6b3dde25135fa, type: 3}
+  skeletonProjectileSound: {fileID: 8300000, guid: d9419ba0bfac1e84a95418ac5851caf6, type: 3}
+  spellSoundVolume: 0.85
+  fireballProjectileFrames:
+  - {fileID: 6070632272332239154, guid: 8f82611c139abce46b6ad67b540f776b, type: 3}
+  - {fileID: 5686573876849487985, guid: 8f82611c139abce46b6ad67b540f776b, type: 3}
+  - {fileID: -1546344911972848874, guid: 8f82611c139abce46b6ad67b540f776b, type: 3}
+  - {fileID: -6920753083076310941, guid: 8f82611c139abce46b6ad67b540f776b, type: 3}
+  fireballProjectileScale: 0.55
+  thunderboltEffectFrames:
+  - {fileID: -7611398090234026803, guid: c25b57527d8d29149b8f89e06188b616, type: 3}
+  - {fileID: 7011415799722544734, guid: c25b57527d8d29149b8f89e06188b616, type: 3}
+  - {fileID: 750604561488655555, guid: c25b57527d8d29149b8f89e06188b616, type: 3}
+  - {fileID: -8624788288607831266, guid: c25b57527d8d29149b8f89e06188b616, type: 3}
+  - {fileID: -1307159319053878778, guid: c25b57527d8d29149b8f89e06188b616, type: 3}
+  thunderboltEffectScale: 1.45
+  thunderboltVerticalOffset: 0.35
+  thunderboltFrameDuration: 0.07
+  manaShieldEffectFrames:
+  - {fileID: -2712257004504368539, guid: 4166ec737683fc44aa5e686778aa633c, type: 3}
+  - {fileID: 7305914968798316463, guid: 4166ec737683fc44aa5e686778aa633c, type: 3}
+  - {fileID: -304428401230747071, guid: 4166ec737683fc44aa5e686778aa633c, type: 3}
+  - {fileID: 8908261122623223823, guid: 4166ec737683fc44aa5e686778aa633c, type: 3}
+  - {fileID: 1978025058471081337, guid: 4166ec737683fc44aa5e686778aa633c, type: 3}
+  manaShieldEffectScale: 1.08
+  manaShieldVerticalOffset: -0.08
+  manaShieldFrameDuration: 0.08
+  manaShieldHoldDuration: 0.16
+  healingLightEffectFrames:
+  - {fileID: -4762110449935144859, guid: e2514e1379cbcdf4d8daeab845448ab2, type: 3}
+  - {fileID: 8639796956417547290, guid: e2514e1379cbcdf4d8daeab845448ab2, type: 3}
+  - {fileID: 273666031226666526, guid: e2514e1379cbcdf4d8daeab845448ab2, type: 3}
+  - {fileID: -2456717952175242815, guid: e2514e1379cbcdf4d8daeab845448ab2, type: 3}
+  - {fileID: -4109705868122294811, guid: e2514e1379cbcdf4d8daeab845448ab2, type: 3}
+  healingLightEffectScale: 1.05
+  healingLightVerticalOffset: -0.05
+  healingLightFrameDuration: 0.075
+  healingLightHoldDuration: 0.1
+  skeletonIdleSprite: {fileID: -1553582051, guid: b08d02b99e443f945823a89fe47da201, type: 3}
+  skeletonAttackFrames:
+  - {fileID: -1003526169788388636, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: 6998320622276768452, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -8774163766112634068, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -6410131532513703490, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: 5348490929694382949, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: 5828656635149748331, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -7660148674477636822, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -4534682994215146347, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -6562313669647316910, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: 4876177631997295599, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -5558704080634717347, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -4152274340760928189, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -3844813859088770711, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -3877023889960898424, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: 1007042676195035617, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -8723163761302261814, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: 8618221632706966718, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: 1559218749387258056, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -1603276351294463808, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  - {fileID: -1085733895610847331, guid: 57825eafafee76b43b266d17f388d62e, type: 3}
+  skeletonAttackFrameDuration: 0.0833
+  skeletonAttackHeightMultiplier: 1.8
+  skeletonProjectileFrames:
+  - {fileID: -3879447286802021818, guid: a4f4043b45cbf944788e79fd8b855829, type: 3}
+  - {fileID: -6548949732745944083, guid: a4f4043b45cbf944788e79fd8b855829, type: 3}
+  - {fileID: -4631506708315765118, guid: a4f4043b45cbf944788e79fd8b855829, type: 3}
+  - {fileID: -7161891074121058103, guid: a4f4043b45cbf944788e79fd8b855829, type: 3}
+  - {fileID: -2585716723454718467, guid: a4f4043b45cbf944788e79fd8b855829, type: 3}
+  - {fileID: 4208784625737046573, guid: a4f4043b45cbf944788e79fd8b855829, type: 3}
+  - {fileID: -5524539201858220638, guid: a4f4043b45cbf944788e79fd8b855829, type: 3}
+  - {fileID: -8578400383913895663, guid: a4f4043b45cbf944788e79fd8b855829, type: 3}
+  - {fileID: 8270421567153189388, guid: a4f4043b45cbf944788e79fd8b855829, type: 3}
+  - {fileID: 461687867711735876, guid: a4f4043b45cbf944788e79fd8b855829, type: 3}
+  skeletonProjectileDuration: 0.45
+  skeletonProjectileHeight: 0.35
+  skeletonProjectileSpawnHeight: 0.45
   hand: {fileID: 8000000053}
   status: {fileID: 8000000059}
   playerLabel: {fileID: 8000000089}
   enemyLabel: {fileID: 8000000101}
+  playerShieldIconSprite: {fileID: 8574579926896417102, guid: 2f350110e90ced0418cdf7bde63096c9, type: 3}
+  playerShieldIconSize: 38
+  playerShieldRowYOffset: -24
 --- !u!1 &8100000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -7201,6 +7537,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8200000017}
   m_CullTransparentMesh: 1
+--- !u!114 &9100000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 125478060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b57441a502a64c9fbf4cd4e109a0e79c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PersistentBackgroundMusic
+  crossfadeDuration: 0.6
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -7213,3 +7562,4 @@ SceneRoots:
   - {fileID: 1930684881}
   - {fileID: 155081252}
   - {fileID: 1469999240}
+  - {fileID: 125478062}

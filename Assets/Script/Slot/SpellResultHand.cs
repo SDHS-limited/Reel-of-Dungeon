@@ -28,6 +28,9 @@ public class SpellResultHand : MonoBehaviour
     private int enemyHP = 100;
     private int enemyMaxHP = 100;
     private int enemyAttackDamage = 10;
+    private bool enemyUsesNormalRestStrongPattern;
+    private int enemyStrongAttackDamage = 20;
+    private int enemyPatternStep;
     private int secondEnemyHP;
     private int secondEnemyMaxHP = 100;
     private int secondEnemyAttackDamage = 10;
@@ -48,7 +51,6 @@ public class SpellResultHand : MonoBehaviour
 
     [SerializeField] private BattleHUD battleHUD;
     [SerializeField] private SpellResultCard cardTemplate;
-    [SerializeField] private Button endTurnButton;
     [SerializeField, Min(0f)] private float healthLabelOffset = 100f;
     [SerializeField, Min(0f)] private float playerLabelOffset = 35f;
     [SerializeField, Min(0f)] private float characterTapPadding = 30f;
@@ -70,6 +72,29 @@ public class SpellResultHand : MonoBehaviour
     [SerializeField, Min(0.01f)] private float playerMagicFlashDuration = 0.16f;
     [SerializeField] private Color healFlashColor = new Color(0.45f, 1f, 0.35f, 1f);
     [SerializeField] private Color shieldFlashColor = new Color(0.25f, 0.65f, 1f, 1f);
+    [SerializeField] private Color playerDamageFlashColor = new Color(1f, 0.18f, 0.18f, 1f);
+
+    [Header("Enemy Lunge Attack")]
+    [Tooltip("플레이어에게 직접 다가가 공격할 적 스프라이트입니다.")]
+    [SerializeField] private Sprite[] enemyLungeAttackSprites;
+    [SerializeField, Min(0.05f)] private float enemyLungeApproachDuration = 0.3f;
+    [SerializeField, Min(0f)] private float enemyLungeContactGap = 0.08f;
+    [SerializeField, Min(0f)] private float enemyLungeImpactPause = 0.12f;
+    [SerializeField, Min(0.05f)] private float enemyLungeReturnDuration = 0.28f;
+    [SerializeField, Min(0f)] private float enemyAttackSequenceDelay = 0.12f;
+
+    [Header("Enemy Rise And Slam Attack")]
+    [Tooltip("위로 올라갔다 내려오며 공격할 적 스프라이트입니다.")]
+    [SerializeField] private Sprite[] enemyRiseAttackSprites;
+    [SerializeField, Min(0.1f)] private float enemyRiseHeight = 1.6f;
+    [SerializeField, Min(0.05f)] private float enemyRiseDuration = 0.38f;
+    [SerializeField, Min(0f)] private float enemyRiseHoldDuration = 0.12f;
+    [SerializeField, Min(0.05f)] private float enemyFallDuration = 0.2f;
+
+    [Header("Character Outlines")]
+    [SerializeField, Range(1f, 1.25f)] private float characterOutlineScale = 1.07f;
+    [SerializeField] private Color playerOutlineColor = new Color(0.2f, 0.85f, 1f, 1f);
+    [SerializeField] private Color enemyOutlineColor = new Color(1f, 0.25f, 0.2f, 1f);
 
     [Header("Attack Animation")]
     [SerializeField, Min(0.1f)] private float wizardScale = 4.5f;
@@ -79,6 +104,50 @@ public class SpellResultHand : MonoBehaviour
     [SerializeField, Min(0.01f)] private float attackFrameDuration = 0.055f;
     [SerializeField, Min(0.05f)] private float attackProjectileDuration = 0.28f;
 
+    [Header("Spell Sounds")]
+    [SerializeField] private AudioClip healSound;
+    [SerializeField] private AudioClip thunderboltSound;
+    [SerializeField] private AudioClip magicMissileSound;
+    [SerializeField] private AudioClip fireballSound;
+    [SerializeField] private AudioClip skeletonProjectileSound;
+    [SerializeField, Range(0f, 1f)] private float spellSoundVolume = 0.9f;
+    private AudioSource spellAudioSource;
+
+    [Header("Fireball Projectile")]
+    [SerializeField] private Sprite[] fireballProjectileFrames;
+    [SerializeField, Min(0.05f)] private float fireballProjectileScale = 0.55f;
+
+    [Header("Thunderbolt Effect")]
+    [SerializeField] private Sprite[] thunderboltEffectFrames;
+    [SerializeField, Min(0.1f)] private float thunderboltEffectScale = 1.45f;
+    [SerializeField, Range(-0.5f, 1f)] private float thunderboltVerticalOffset = 0.35f;
+    [SerializeField, Min(0.01f)] private float thunderboltFrameDuration = 0.07f;
+
+    [Header("Mana Shield Effect")]
+    [SerializeField] private Sprite[] manaShieldEffectFrames;
+    [SerializeField, Min(0.1f)] private float manaShieldEffectScale = 1.08f;
+    [SerializeField, Range(-0.5f, 0.5f)] private float manaShieldVerticalOffset = -0.08f;
+    [SerializeField, Min(0.01f)] private float manaShieldFrameDuration = 0.08f;
+    [SerializeField, Min(0f)] private float manaShieldHoldDuration = 0.16f;
+
+    [Header("Healing Light Effect")]
+    [SerializeField] private Sprite[] healingLightEffectFrames;
+    [SerializeField, Min(0.1f)] private float healingLightEffectScale = 1.05f;
+    [SerializeField, Range(-0.5f, 0.5f)] private float healingLightVerticalOffset = -0.05f;
+    [SerializeField, Min(0.01f)] private float healingLightFrameDuration = 0.075f;
+    [SerializeField, Min(0f)] private float healingLightHoldDuration = 0.1f;
+
+    [Header("Skeleton Attack Animation")]
+    [SerializeField] private Sprite skeletonIdleSprite;
+    [SerializeField] private Sprite[] skeletonAttackFrames;
+    [SerializeField, Min(0.01f)] private float skeletonAttackFrameDuration = 0.0833f;
+    [SerializeField, Min(0.1f)] private float skeletonAttackHeightMultiplier = 1.8f;
+    [Header("Skeleton Projectile")]
+    [SerializeField] private Sprite[] skeletonProjectileFrames;
+    [SerializeField, Min(0.05f)] private float skeletonProjectileDuration = 0.45f;
+    [SerializeField, Min(0.05f)] private float skeletonProjectileHeight = 0.35f;
+    [SerializeField, Range(0f, 1f)] private float skeletonProjectileSpawnHeight = 0.45f;
+
     private Sprite[] playerAttackFrames;
     private Sprite wizardIdleSprite;
     private Sprite[] attackProjectileFrames;
@@ -86,6 +155,10 @@ public class SpellResultHand : MonoBehaviour
     private int activePlayerAttackAnimations;
     private int pendingAttackImpacts;
     private Coroutine playerMagicFlashRoutine;
+    private Coroutine manaShieldEffectRoutine;
+    private GameObject manaShieldEffectObject;
+    private Coroutine healingLightEffectRoutine;
+    private GameObject healingLightEffectObject;
     private Color playerColorBeforeMagicFlash;
 
     private Canvas canvas;
@@ -95,6 +168,14 @@ public class SpellResultHand : MonoBehaviour
     [SerializeField] private TMP_Text playerLabel;
     [SerializeField] private TMP_Text enemyLabel;
 
+    [Header("Player Shield Status")]
+    [SerializeField] private Sprite playerShieldIconSprite;
+    [SerializeField, Min(12f)] private float playerShieldIconSize = 38f;
+    [SerializeField] private float playerShieldRowYOffset = -24f;
+
+    private Image playerShieldIcon;
+    private TMP_Text playerShieldValue;
+
     private SpriteRenderer player;
     private SpriteRenderer enemy;
 
@@ -102,6 +183,12 @@ public class SpellResultHand : MonoBehaviour
     private RectTransform enemyTapArea;
     private RectTransform secondEnemyTapArea;
     private RectTransform thirdEnemyTapArea;
+
+    private readonly Dictionary<SpriteRenderer, SpriteRenderer> characterOutlines =
+        new Dictionary<SpriteRenderer, SpriteRenderer>();
+
+    private readonly Dictionary<SpriteRenderer, Vector3> fixedEnemyLabelAnchors =
+        new Dictionary<SpriteRenderer, Vector3>();
 
     private readonly List<SpellResultCard> cards =
         new List<SpellResultCard>();
@@ -127,6 +214,7 @@ public class SpellResultHand : MonoBehaviour
     {
         canvas = targetCanvas;
         font = targetFont;
+        EnsureSpellAudioSource();
         Sprite[] wizardIdleFrames = LoadAnimationFrames("AttackAnimations/Wizard");
         wizardIdleSprite =
             wizardIdleFrames.Length > 0 ? wizardIdleFrames[0] : null;
@@ -199,13 +287,14 @@ public class SpellResultHand : MonoBehaviour
         // =====================================================
 
         ApplyRoomBattleSettings(roomSettings);
+        CreateCharacterOutlines();
+        CreatePlayerShieldStatusUI();
 
 
         // =====================================================
         // 마법 결과 창
         // =====================================================
 
-        endTurnButton.onClick.AddListener(Finish);
         cardTemplate.gameObject.SetActive(false);
         hand.gameObject.SetActive(false);
         RefreshStats();
@@ -228,6 +317,17 @@ public class SpellResultHand : MonoBehaviour
             out enemyHP,
             out enemyAttackDamage
         );
+
+        RoomEnemySettings primarySettings =
+            settings != null ? settings.enemy : null;
+        enemyUsesNormalRestStrongPattern =
+            primarySettings != null &&
+            primarySettings.useNormalRestStrongPattern;
+        enemyStrongAttackDamage =
+            primarySettings != null && primarySettings.strongAttackDamage > 0
+                ? primarySettings.strongAttackDamage
+                : enemyAttackDamage * 2;
+        enemyPatternStep = 0;
 
         ConfigureEnemy(
             secondEnemy,
@@ -354,6 +454,66 @@ public class SpellResultHand : MonoBehaviour
     }
 
 
+    private void CreateCharacterOutlines()
+    {
+        CreateCharacterOutline(player, "Player Outline", playerOutlineColor);
+        CreateCharacterOutline(enemy, "Enemy Outline", enemyOutlineColor);
+        CreateCharacterOutline(secondEnemy, "Enemy 2 Outline", enemyOutlineColor);
+        CreateCharacterOutline(thirdEnemy, "Enemy 3 Outline", enemyOutlineColor);
+    }
+
+
+    private void CreateCharacterOutline(
+        SpriteRenderer source,
+        string outlineName,
+        Color outlineColor)
+    {
+        if (source == null || characterOutlines.ContainsKey(source))
+            return;
+
+        GameObject outlineObject = new GameObject(outlineName);
+        outlineObject.layer = source.gameObject.layer;
+        outlineObject.transform.SetParent(source.transform, false);
+        outlineObject.transform.localPosition = Vector3.zero;
+        outlineObject.transform.localRotation = Quaternion.identity;
+        outlineObject.transform.localScale = Vector3.one * characterOutlineScale;
+
+        SpriteRenderer outline = outlineObject.AddComponent<SpriteRenderer>();
+        outline.sprite = source.sprite;
+        outline.color = outlineColor;
+        outline.sharedMaterial = source.sharedMaterial;
+        outline.sortingLayerID = source.sortingLayerID;
+        outline.sortingOrder = source.sortingOrder - 1;
+        outline.flipX = source.flipX;
+        outline.flipY = source.flipY;
+        outline.maskInteraction = source.maskInteraction;
+        outline.spriteSortPoint = source.spriteSortPoint;
+
+        characterOutlines.Add(source, outline);
+    }
+
+
+    private void SyncCharacterOutlines()
+    {
+        foreach (KeyValuePair<SpriteRenderer, SpriteRenderer> pair in characterOutlines)
+        {
+            SpriteRenderer source = pair.Key;
+            SpriteRenderer outline = pair.Value;
+            if (source == null || outline == null)
+                continue;
+
+            outline.enabled = source.enabled;
+            outline.sprite = source.sprite;
+            outline.sortingLayerID = source.sortingLayerID;
+            outline.sortingOrder = source.sortingOrder - 1;
+            outline.flipX = source.flipX;
+            outline.flipY = source.flipY;
+            outline.transform.localScale = Vector3.one * characterOutlineScale;
+            outline.color = source == player ? playerOutlineColor : enemyOutlineColor;
+        }
+    }
+
+
     // =========================================================
     // 마법 카드 표시
     // =========================================================
@@ -379,8 +539,22 @@ public class SpellResultHand : MonoBehaviour
         RefreshStats();
 
 
+        int megaBonus = 0;
+
+        foreach (SymbolResolution result in results)
+        {
+            if (
+                result != null &&
+                result.synergyTier == SynergyTier.Mega)
+            {
+                megaBonus += result.synergyBonus;
+            }
+        }
+
         status.text =
-            "1ST CARD  ->  TAP THE GLOWING CHARACTER!";
+            megaBonus > 0
+                ? $"MEGA BONUS! +{megaBonus}  ->  TAP THE GLOWING CHARACTER!"
+                : "1ST CARD  ->  TAP THE GLOWING CHARACTER!";
 
 
         Texture2D atlas =
@@ -581,7 +755,11 @@ public class SpellResultHand : MonoBehaviour
             result.symbol.symbolType)
         {
             case SymbolType.Attack:
-                PlayAttackAnimation(target, value);
+                PlayAttackAnimation(
+                    target,
+                    value,
+                    result.symbol.DisplayName
+                );
 
                 break;
 
@@ -595,12 +773,19 @@ public class SpellResultHand : MonoBehaviour
                     new Color(0.15f, 0.82f, 1f)
                 );
                 if (value > 0)
+                {
                     PlayPlayerMagicFlash(shieldFlashColor);
+
+                    if (IsManaShieldSpell(result.symbol.DisplayName))
+                        PlayManaShieldEffect();
+                }
 
                 break;
 
 
             case SymbolType.Heal:
+
+                PlaySpellSound(healSound);
 
                 int previousPlayerHealth = PlayerHP;
 
@@ -619,6 +804,14 @@ public class SpellResultHand : MonoBehaviour
                 );
                 if (appliedHealing > 0)
                     PlayPlayerMagicFlash(healFlashColor);
+
+                if (
+                    value > 0 &&
+                    IsHealingLightSpell(result.symbol.DisplayName)
+                )
+                {
+                    PlayHealingLightEffect();
+                }
 
                 break;
 
@@ -646,7 +839,10 @@ public class SpellResultHand : MonoBehaviour
                     new Color(1f, 0.25f, 0.18f)
                 );
                 if (healthBeforeSkull > PlayerHP)
+                {
+                    PlayPlayerMagicFlash(playerDamageFlashColor);
                     ShakeCamera();
+                }
 
                 break;
         }
@@ -661,6 +857,8 @@ public class SpellResultHand : MonoBehaviour
 
 
         RefreshStats();
+
+        HidePlayerAndShowDefeat();
 
 
         status.text =
@@ -1055,8 +1253,13 @@ public class SpellResultHand : MonoBehaviour
     }
 
 
-    private void PlayAttackAnimation(SpriteRenderer target, int damage)
+    private void PlayAttackAnimation(
+        SpriteRenderer target,
+        int damage,
+        string spellName)
     {
+        PlayAttackSpellSound(spellName);
+
         if (
             player == null ||
             target == null ||
@@ -1068,13 +1271,20 @@ public class SpellResultHand : MonoBehaviour
         }
 
         pendingAttackImpacts++;
-        StartCoroutine(PlayAttackAnimationRoutine(target, damage));
+        StartCoroutine(
+            PlayAttackAnimationRoutine(
+                target,
+                damage,
+                spellName
+            )
+        );
     }
 
 
     private IEnumerator PlayAttackAnimationRoutine(
         SpriteRenderer target,
-        int damage)
+        int damage,
+        string spellName)
     {
         Vector3 start = player.bounds.center;
         Vector3 destination = target.bounds.center;
@@ -1112,7 +1322,32 @@ public class SpellResultHand : MonoBehaviour
         Destroy(attackObject);
         FinishPlayerAttackAnimation();
 
-        if (attackProjectileFrames == null || attackProjectileFrames.Length == 0)
+        bool usesThunderboltEffect =
+            IsThunderboltSpell(spellName) &&
+            thunderboltEffectFrames != null &&
+            thunderboltEffectFrames.Length > 0;
+
+        if (usesThunderboltEffect)
+        {
+            yield return PlayThunderboltEffectRoutine(
+                target,
+                damage,
+                sortingOrder + 1
+            );
+            yield break;
+        }
+
+        bool usesFireballProjectile =
+            IsFireballSpell(spellName) &&
+            fireballProjectileFrames != null &&
+            fireballProjectileFrames.Length > 0;
+
+        Sprite[] projectileFrames =
+            usesFireballProjectile
+                ? fireballProjectileFrames
+                : attackProjectileFrames;
+
+        if (projectileFrames == null || projectileFrames.Length == 0)
         {
             ResolveAttackImpact(target, damage);
             yield break;
@@ -1124,18 +1359,26 @@ public class SpellResultHand : MonoBehaviour
         SpriteRenderer projectileRenderer = projectileObject.AddComponent<SpriteRenderer>();
         projectileRenderer.sortingLayerID = player.sortingLayerID;
         projectileRenderer.sortingOrder = sortingOrder + 1;
-        projectileRenderer.flipX = direction.x < 0f;
-        projectileObject.transform.localScale = Vector3.one * attackProjectileScale;
+        // Firefly 원본은 불꽃 머리가 왼쪽을 향하므로 오른쪽 발사 시 반전한다.
+        projectileRenderer.flipX =
+            usesFireballProjectile
+                ? direction.x > 0f
+                : direction.x < 0f;
+        projectileObject.transform.localScale = Vector3.one * (
+            usesFireballProjectile
+                ? fireballProjectileScale
+                : attackProjectileScale
+        );
 
         float elapsed = 0f;
         while (elapsed < attackProjectileDuration)
         {
             float progress = Mathf.Clamp01(elapsed / attackProjectileDuration);
             int frameIndex = Mathf.Min(
-                attackProjectileFrames.Length - 1,
-                Mathf.FloorToInt(progress * attackProjectileFrames.Length)
+                projectileFrames.Length - 1,
+                Mathf.FloorToInt(progress * projectileFrames.Length)
             );
-            projectileRenderer.sprite = attackProjectileFrames[frameIndex];
+            projectileRenderer.sprite = projectileFrames[frameIndex];
             projectileObject.transform.position = Vector3.Lerp(
                 projectileStart,
                 destination,
@@ -1148,10 +1391,334 @@ public class SpellResultHand : MonoBehaviour
 
         projectileObject.transform.position = destination;
         projectileRenderer.sprite =
-            attackProjectileFrames[attackProjectileFrames.Length - 1];
+            projectileFrames[projectileFrames.Length - 1];
         ResolveAttackImpact(target, damage);
         yield return new WaitForSecondsRealtime(attackFrameDuration);
         Destroy(projectileObject);
+    }
+
+
+    private void EnsureSpellAudioSource()
+    {
+        if (spellAudioSource != null)
+            return;
+
+        spellAudioSource = gameObject.AddComponent<AudioSource>();
+        spellAudioSource.playOnAwake = false;
+        spellAudioSource.loop = false;
+        spellAudioSource.spatialBlend = 0f;
+    }
+
+
+    private void PlaySpellSound(AudioClip clip)
+    {
+        if (clip == null)
+            return;
+
+        EnsureSpellAudioSource();
+        spellAudioSource.PlayOneShot(clip, spellSoundVolume);
+    }
+
+
+    private void PlayAttackSpellSound(string spellName)
+    {
+        if (IsFireballSpell(spellName))
+        {
+            PlaySpellSound(fireballSound);
+            return;
+        }
+
+        if (IsMagicMissileSpell(spellName))
+            PlaySpellSound(magicMissileSound);
+    }
+
+
+    private static bool IsMagicMissileSpell(string spellName)
+    {
+        return string.Equals(
+            spellName,
+            "Magic Missile",
+            StringComparison.OrdinalIgnoreCase
+        );
+    }
+
+
+    private static bool IsFireballSpell(string spellName)
+    {
+        return string.Equals(
+            spellName,
+            "Fireball",
+            StringComparison.OrdinalIgnoreCase
+        );
+    }
+
+
+    private static bool IsThunderboltSpell(string spellName)
+    {
+        return string.Equals(
+            spellName,
+            "Thunderbolt",
+            StringComparison.OrdinalIgnoreCase
+        );
+    }
+
+
+    private IEnumerator PlayThunderboltEffectRoutine(
+        SpriteRenderer target,
+        int damage,
+        int sortingOrder,
+        bool damagesPlayer = false)
+    {
+        // 플레이어와 적의 번개 공격 모두 이 이펙트를 통과하므로
+        // 여기서 한 번만 재생해 시각 효과와 소리를 맞춘다.
+        PlaySpellSound(thunderboltSound);
+
+        Vector3 targetCenter = target.bounds.center;
+        float targetHeight = target.bounds.size.y;
+        Vector3 effectPosition =
+            targetCenter +
+            Vector3.up * targetHeight * thunderboltVerticalOffset;
+
+        GameObject effectObject = new GameObject("Thunderbolt Effect");
+        SpriteRenderer effectRenderer =
+            effectObject.AddComponent<SpriteRenderer>();
+
+        effectRenderer.sortingLayerID = target.sortingLayerID;
+        effectRenderer.sortingOrder = sortingOrder;
+        effectObject.transform.position = effectPosition;
+
+        float largestFrameHeight = 0f;
+        foreach (Sprite frame in thunderboltEffectFrames)
+        {
+            if (frame != null)
+            {
+                largestFrameHeight = Mathf.Max(
+                    largestFrameHeight,
+                    frame.bounds.size.y
+                );
+            }
+        }
+
+        float effectScale =
+            largestFrameHeight > 0f
+                ? targetHeight * thunderboltEffectScale / largestFrameHeight
+                : thunderboltEffectScale;
+
+        effectObject.transform.localScale = Vector3.one * effectScale;
+
+        int impactFrame = Mathf.Min(1, thunderboltEffectFrames.Length - 1);
+        bool impactResolved = false;
+
+        for (int i = 0; i < thunderboltEffectFrames.Length; i++)
+        {
+            Sprite frame = thunderboltEffectFrames[i];
+            if (frame == null)
+                continue;
+
+            effectRenderer.sprite = frame;
+
+            if (!impactResolved && i >= impactFrame)
+            {
+                ResolveThunderboltImpact(target, damage, damagesPlayer);
+                impactResolved = true;
+            }
+
+            yield return new WaitForSecondsRealtime(thunderboltFrameDuration);
+        }
+
+        if (!impactResolved)
+            ResolveThunderboltImpact(target, damage, damagesPlayer);
+
+        Destroy(effectObject);
+    }
+
+
+    private void ResolveThunderboltImpact(
+        SpriteRenderer target,
+        int damage,
+        bool damagesPlayer)
+    {
+        if (damagesPlayer)
+            ApplyEnemyAttackDamage(damage);
+        else
+            ResolveAttackImpact(target, damage);
+    }
+
+
+    private static bool IsManaShieldSpell(string spellName)
+    {
+        return string.Equals(
+            spellName,
+            "Mana Shield",
+            StringComparison.OrdinalIgnoreCase
+        );
+    }
+
+
+    private static bool IsHealingLightSpell(string spellName)
+    {
+        return
+            string.Equals(
+                spellName,
+                "Healing Light",
+                StringComparison.OrdinalIgnoreCase
+            ) ||
+            string.Equals(
+                spellName,
+                "Healing_Light_c",
+                StringComparison.OrdinalIgnoreCase
+            ) ||
+            string.Equals(
+                spellName,
+                "Dewdrop",
+                StringComparison.OrdinalIgnoreCase
+            );
+    }
+
+
+    private void PlayHealingLightEffect()
+    {
+        if (
+            player == null ||
+            healingLightEffectFrames == null ||
+            healingLightEffectFrames.Length == 0)
+        {
+            return;
+        }
+
+        if (healingLightEffectRoutine != null)
+            StopCoroutine(healingLightEffectRoutine);
+
+        if (healingLightEffectObject != null)
+            Destroy(healingLightEffectObject);
+
+        healingLightEffectRoutine = StartCoroutine(
+            PlayHealingLightEffectRoutine()
+        );
+    }
+
+
+    private IEnumerator PlayHealingLightEffectRoutine()
+    {
+        healingLightEffectObject = new GameObject("Healing Light Effect");
+        SpriteRenderer effectRenderer =
+            healingLightEffectObject.AddComponent<SpriteRenderer>();
+
+        effectRenderer.sortingLayerID = player.sortingLayerID;
+        effectRenderer.sortingOrder = player.sortingOrder + 5;
+
+        Sprite largestFrame =
+            healingLightEffectFrames[healingLightEffectFrames.Length - 1];
+
+        float frameHeight =
+            largestFrame != null
+                ? largestFrame.bounds.size.y
+                : 0f;
+
+        float effectScale =
+            frameHeight > 0f
+                ? player.bounds.size.y * healingLightEffectScale / frameHeight
+                : healingLightEffectScale;
+
+        healingLightEffectObject.transform.localScale =
+            Vector3.one * effectScale;
+
+        for (int i = 0; i < healingLightEffectFrames.Length; i++)
+        {
+            if (player == null)
+                break;
+
+            Sprite frame = healingLightEffectFrames[i];
+            if (frame == null)
+                continue;
+
+            effectRenderer.sprite = frame;
+            healingLightEffectObject.transform.position =
+                player.bounds.center +
+                Vector3.up * player.bounds.size.y * healingLightVerticalOffset;
+
+            yield return new WaitForSecondsRealtime(healingLightFrameDuration);
+        }
+
+        if (healingLightHoldDuration > 0f)
+            yield return new WaitForSecondsRealtime(healingLightHoldDuration);
+
+        if (healingLightEffectObject != null)
+            Destroy(healingLightEffectObject);
+
+        healingLightEffectObject = null;
+        healingLightEffectRoutine = null;
+    }
+
+
+    private void PlayManaShieldEffect()
+    {
+        if (
+            player == null ||
+            manaShieldEffectFrames == null ||
+            manaShieldEffectFrames.Length == 0)
+        {
+            return;
+        }
+
+        if (manaShieldEffectRoutine != null)
+            StopCoroutine(manaShieldEffectRoutine);
+
+        if (manaShieldEffectObject != null)
+            Destroy(manaShieldEffectObject);
+
+        manaShieldEffectRoutine = StartCoroutine(
+            PlayManaShieldEffectRoutine()
+        );
+    }
+
+
+    private IEnumerator PlayManaShieldEffectRoutine()
+    {
+        manaShieldEffectObject = new GameObject("Mana Shield Effect");
+        SpriteRenderer effectRenderer =
+            manaShieldEffectObject.AddComponent<SpriteRenderer>();
+
+        effectRenderer.sortingLayerID = player.sortingLayerID;
+        effectRenderer.sortingOrder = player.sortingOrder + 4;
+
+        Sprite largestFrame =
+            manaShieldEffectFrames[manaShieldEffectFrames.Length - 1];
+
+        float frameHeight =
+            largestFrame != null
+                ? largestFrame.bounds.size.y
+                : 0f;
+
+        float effectScale =
+            frameHeight > 0f
+                ? player.bounds.size.y * manaShieldEffectScale / frameHeight
+                : manaShieldEffectScale;
+
+        manaShieldEffectObject.transform.localScale =
+            Vector3.one * effectScale;
+
+        for (int i = 0; i < manaShieldEffectFrames.Length; i++)
+        {
+            if (player == null)
+                break;
+
+            effectRenderer.sprite = manaShieldEffectFrames[i];
+            manaShieldEffectObject.transform.position =
+                player.bounds.center +
+                Vector3.up * player.bounds.size.y * manaShieldVerticalOffset;
+
+            yield return new WaitForSecondsRealtime(manaShieldFrameDuration);
+        }
+
+        if (manaShieldHoldDuration > 0f)
+            yield return new WaitForSecondsRealtime(manaShieldHoldDuration);
+
+        if (manaShieldEffectObject != null)
+            Destroy(manaShieldEffectObject);
+
+        manaShieldEffectObject = null;
+        manaShieldEffectRoutine = null;
     }
 
 
@@ -1362,8 +1929,10 @@ public class SpellResultHand : MonoBehaviour
     private void RefreshStats()
     {
         playerLabel.text =
-            $"PLAYER  {PlayerHP}/100\n" +
-            $"SHIELD {Shield}  GOLD {Gold}";
+            $"PLAYER  {PlayerHP}/100\n\n";
+
+        if (playerShieldValue != null)
+            playerShieldValue.text = Shield.ToString();
 
 
         enemyLabel.text =
@@ -1418,6 +1987,67 @@ public class SpellResultHand : MonoBehaviour
     }
 
 
+    private void CreatePlayerShieldStatusUI()
+    {
+        if (playerLabel == null)
+            return;
+
+        if (playerShieldIcon == null)
+        {
+            GameObject iconObject = new GameObject(
+                "Shield Icon",
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(Image)
+            );
+
+            iconObject.transform.SetParent(playerLabel.transform, false);
+            playerShieldIcon = iconObject.GetComponent<Image>();
+            playerShieldIcon.sprite = playerShieldIconSprite;
+            playerShieldIcon.preserveAspect = true;
+            playerShieldIcon.raycastTarget = false;
+
+            RectTransform iconRect = playerShieldIcon.rectTransform;
+            iconRect.anchorMin = new Vector2(0.5f, 0.5f);
+            iconRect.anchorMax = new Vector2(0.5f, 0.5f);
+            iconRect.pivot = new Vector2(0.5f, 0.5f);
+            iconRect.sizeDelta = Vector2.one * playerShieldIconSize;
+            iconRect.anchoredPosition = new Vector2(
+                -22f,
+                playerShieldRowYOffset
+            );
+        }
+
+        if (playerShieldValue == null)
+        {
+            GameObject valueObject = new GameObject(
+                "Shield Value",
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(TextMeshProUGUI)
+            );
+
+            valueObject.transform.SetParent(playerLabel.transform, false);
+            playerShieldValue = valueObject.GetComponent<TextMeshProUGUI>();
+            playerShieldValue.font = font != null ? font : playerLabel.font;
+            playerShieldValue.fontSize = playerLabel.fontSize * 0.9f;
+            playerShieldValue.color = playerLabel.color;
+            playerShieldValue.alignment = TextAlignmentOptions.Left;
+            playerShieldValue.raycastTarget = false;
+
+            RectTransform valueRect = playerShieldValue.rectTransform;
+            valueRect.anchorMin = new Vector2(0.5f, 0.5f);
+            valueRect.anchorMax = new Vector2(0.5f, 0.5f);
+            valueRect.pivot = new Vector2(0.5f, 0.5f);
+            valueRect.sizeDelta = new Vector2(60f, playerShieldIconSize + 8f);
+            valueRect.anchoredPosition = new Vector2(
+                26f,
+                playerShieldRowYOffset
+            );
+        }
+    }
+
+
     private static void RefreshEnemyHealthBar(
         Image fill,
         int currentHealth,
@@ -1452,24 +2082,510 @@ public class SpellResultHand : MonoBehaviour
         if (EnemyDefeated || PlayerDefeated) yield break;
 
         if (enemy != null && enemyHP > 0)
-            yield return PerformEnemyAttack(enemyAttackDamage);
+            yield return PerformPrimaryEnemyTurn();
 
         if (!PlayerDefeated && secondEnemy != null && secondEnemyHP > 0)
-            yield return PerformEnemyAttack(secondEnemyAttackDamage);
+            yield return PerformEnemyAttack(secondEnemy, secondEnemyAttackDamage);
 
         if (!PlayerDefeated && thirdEnemy != null && thirdEnemyHP > 0)
-            yield return PerformEnemyAttack(thirdEnemyAttackDamage);
+            yield return PerformEnemyAttack(thirdEnemy, thirdEnemyAttackDamage);
     }
 
-    private IEnumerator PerformEnemyAttack(int damage)
+
+    private IEnumerator PerformPrimaryEnemyTurn()
+    {
+        if (!enemyUsesNormalRestStrongPattern)
+        {
+            yield return PerformEnemyAttack(enemy, enemyAttackDamage);
+            yield break;
+        }
+
+        switch (enemyPatternStep)
+        {
+            case 0:
+                yield return PerformEnemyAttack(enemy, enemyAttackDamage);
+                break;
+
+            case 1:
+                ShowFloatingCombatText(
+                    enemy,
+                    "...",
+                    new Color(0.75f, 0.8f, 0.9f),
+                    18f
+                );
+                yield return new WaitForSecondsRealtime(0.35f);
+                break;
+
+            default:
+                ShowFloatingCombatText(
+                    enemy,
+                    "!!",
+                    new Color(1f, 0.55f, 0.12f),
+                    18f
+                );
+                yield return new WaitForSecondsRealtime(0.2f);
+                yield return PerformEnemyAttack(
+                    enemy,
+                    enemyStrongAttackDamage,
+                    true
+                );
+                break;
+        }
+
+        enemyPatternStep = (enemyPatternStep + 1) % 3;
+    }
+
+    private IEnumerator PerformEnemyAttack(
+        SpriteRenderer attacker,
+        int damage,
+        bool usesThunderbolt = false)
     {
         damage = Mathf.Max(0, damage);
+
+        if (CanPlaySkeletonAttack(attacker))
+        {
+            yield return PlaySkeletonAttackAnimation(
+                attacker,
+                damage,
+                usesThunderbolt
+            );
+            yield break;
+        }
+
+        if (usesThunderbolt)
+        {
+            yield return PlayEnemyThunderboltAttack(attacker, damage);
+            yield break;
+        }
+
+        if (CanPlayEnemyRiseAttack(attacker))
+        {
+            yield return PlayEnemyRiseAttack(attacker, damage);
+            yield break;
+        }
+
+        if (CanPlayEnemyLungeAttack(attacker))
+        {
+            yield return PlayEnemyLungeAttack(attacker, damage);
+            yield break;
+        }
+
+        ApplyEnemyAttackDamage(damage);
+        yield return new WaitForSecondsRealtime(0.25f);
+    }
+
+
+    private bool CanPlayEnemyRiseAttack(SpriteRenderer attacker)
+    {
+        if (
+            attacker == null ||
+            attacker.sprite == null ||
+            enemyRiseAttackSprites == null)
+        {
+            return false;
+        }
+
+        foreach (Sprite riseSprite in enemyRiseAttackSprites)
+        {
+            if (riseSprite == attacker.sprite)
+                return true;
+        }
+
+        return false;
+    }
+
+
+    private IEnumerator PlayEnemyRiseAttack(
+        SpriteRenderer attacker,
+        int damage)
+    {
+        if (attacker == null)
+        {
+            ApplyEnemyAttackDamage(damage);
+            yield break;
+        }
+
+        Transform attackerTransform = attacker.transform;
+        Vector3 originalPosition = attackerTransform.position;
+        Vector3 raisedPosition =
+            originalPosition + Vector3.up * Mathf.Max(0.1f, enemyRiseHeight);
+        Bounds originalBounds = attacker.bounds;
+
+        fixedEnemyLabelAnchors[attacker] =
+            originalBounds.center + Vector3.up * originalBounds.extents.y;
+
+        try
+        {
+            yield return MoveEnemyForAttack(
+                attackerTransform,
+                originalPosition,
+                raisedPosition,
+                enemyRiseDuration
+            );
+
+            if (enemyRiseHoldDuration > 0f)
+            {
+                yield return new WaitForSecondsRealtime(
+                    enemyRiseHoldDuration
+                );
+            }
+
+            yield return MoveEnemyForAttack(
+                attackerTransform,
+                raisedPosition,
+                originalPosition,
+                enemyFallDuration
+            );
+
+            // 원래 위치로 착지하는 순간 플레이어에게 피해를 준다.
+            ApplyEnemyAttackDamage(damage);
+
+            if (enemyLungeImpactPause > 0f)
+            {
+                yield return new WaitForSecondsRealtime(
+                    enemyLungeImpactPause
+                );
+            }
+        }
+        finally
+        {
+            if (attackerTransform != null)
+                attackerTransform.position = originalPosition;
+
+            fixedEnemyLabelAnchors.Remove(attacker);
+        }
+
+        if (enemyAttackSequenceDelay > 0f)
+        {
+            yield return new WaitForSecondsRealtime(
+                enemyAttackSequenceDelay
+            );
+        }
+    }
+
+
+    private bool CanPlayEnemyLungeAttack(SpriteRenderer attacker)
+    {
+        if (
+            attacker == null ||
+            attacker.sprite == null ||
+            enemyLungeAttackSprites == null)
+        {
+            return false;
+        }
+
+        foreach (Sprite lungeSprite in enemyLungeAttackSprites)
+        {
+            if (lungeSprite == attacker.sprite)
+                return true;
+        }
+
+        return false;
+    }
+
+
+    private IEnumerator PlayEnemyLungeAttack(
+        SpriteRenderer attacker,
+        int damage)
+    {
+        if (attacker == null || player == null)
+        {
+            ApplyEnemyAttackDamage(damage);
+            yield break;
+        }
+
+        Transform attackerTransform = attacker.transform;
+        Vector3 originalPosition = attackerTransform.position;
+        Bounds originalBounds = attacker.bounds;
+
+        fixedEnemyLabelAnchors[attacker] =
+            originalBounds.center + Vector3.up * originalBounds.extents.y;
+
+        float attackSide = Mathf.Sign(
+            originalBounds.center.x - player.bounds.center.x
+        );
+        if (Mathf.Approximately(attackSide, 0f))
+            attackSide = 1f;
+
+        float contactCenterX =
+            player.bounds.center.x +
+            attackSide * (
+                player.bounds.extents.x +
+                originalBounds.extents.x +
+                Mathf.Max(0f, enemyLungeContactGap)
+            );
+
+        Vector3 contactPosition = originalPosition;
+        contactPosition.x += contactCenterX - originalBounds.center.x;
+
+        try
+        {
+            yield return MoveEnemyForAttack(
+                attackerTransform,
+                originalPosition,
+                contactPosition,
+                enemyLungeApproachDuration
+            );
+
+            // 플레이어 바로 앞에 도착한 순간 피해를 적용한다.
+            ApplyEnemyAttackDamage(damage);
+
+            if (enemyLungeImpactPause > 0f)
+            {
+                yield return new WaitForSecondsRealtime(
+                    enemyLungeImpactPause
+                );
+            }
+
+            yield return MoveEnemyForAttack(
+                attackerTransform,
+                contactPosition,
+                originalPosition,
+                enemyLungeReturnDuration
+            );
+        }
+        finally
+        {
+            if (attackerTransform != null)
+                attackerTransform.position = originalPosition;
+
+            fixedEnemyLabelAnchors.Remove(attacker);
+        }
+
+        if (enemyAttackSequenceDelay > 0f)
+        {
+            yield return new WaitForSecondsRealtime(
+                enemyAttackSequenceDelay
+            );
+        }
+    }
+
+
+    private static IEnumerator MoveEnemyForAttack(
+        Transform target,
+        Vector3 start,
+        Vector3 destination,
+        float duration)
+    {
+        duration = Mathf.Max(0.05f, duration);
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float progress = Mathf.Clamp01(elapsed / duration);
+            float easedProgress = progress * progress * (3f - 2f * progress);
+            target.position = Vector3.LerpUnclamped(
+                start,
+                destination,
+                easedProgress
+            );
+            yield return null;
+        }
+
+        target.position = destination;
+    }
+
+
+    private bool CanPlaySkeletonAttack(SpriteRenderer attacker)
+    {
+        return
+            attacker != null &&
+            attacker.sprite == skeletonIdleSprite &&
+            skeletonAttackFrames != null &&
+            skeletonAttackFrames.Length > 0;
+    }
+
+
+    private IEnumerator PlaySkeletonAttackAnimation(
+        SpriteRenderer attacker,
+        int damage,
+        bool usesThunderbolt)
+    {
+        Sprite originalSprite = attacker.sprite;
+        Vector3 originalPosition = attacker.transform.position;
+        Vector3 originalScale = attacker.transform.localScale;
+        Bounds originalBounds = attacker.bounds;
+
+        fixedEnemyLabelAnchors[attacker] =
+            originalBounds.center + Vector3.up * originalBounds.extents.y;
+
+        float largestFrameHeight = 0.001f;
+        foreach (Sprite frame in skeletonAttackFrames)
+        {
+            if (frame != null)
+                largestFrameHeight = Mathf.Max(largestFrameHeight, frame.bounds.size.y);
+        }
+
+        float originalHeight = Mathf.Max(
+            0.001f,
+            originalSprite.bounds.size.y
+        );
+        float frameScale =
+            originalHeight * skeletonAttackHeightMultiplier / largestFrameHeight;
+
+        for (int i = 0; i < skeletonAttackFrames.Length; i++)
+        {
+            Sprite frame = skeletonAttackFrames[i];
+            if (frame == null)
+                continue;
+
+            attacker.sprite = frame;
+
+            attacker.transform.localScale = new Vector3(
+                originalScale.x * frameScale,
+                originalScale.y * frameScale,
+                originalScale.z
+            );
+            attacker.transform.position = originalPosition;
+
+            Bounds frameBounds = attacker.bounds;
+            attacker.transform.position += new Vector3(
+                originalBounds.center.x - frameBounds.center.x,
+                originalBounds.min.y - frameBounds.min.y,
+                0f
+            );
+            SnapTransformToSpritePixels(attacker.transform, frame);
+
+
+            yield return new WaitForSecondsRealtime(
+                skeletonAttackFrameDuration
+            );
+        }
+
+        attacker.sprite = originalSprite;
+        attacker.transform.localScale = originalScale;
+        attacker.transform.position = originalPosition;
+        fixedEnemyLabelAnchors.Remove(attacker);
+
+        if (usesThunderbolt)
+            yield return PlayEnemyThunderboltAttack(attacker, damage);
+        else
+            yield return PlaySkeletonProjectile(attacker, damage);
+    }
+
+
+    private IEnumerator PlayEnemyThunderboltAttack(
+        SpriteRenderer attacker,
+        int damage)
+    {
+        if (player == null)
+            yield break;
+
+        if (
+            thunderboltEffectFrames == null ||
+            thunderboltEffectFrames.Length == 0)
+        {
+            ApplyEnemyAttackDamage(damage);
+            yield break;
+        }
+
+        int sortingOrder =
+            Mathf.Max(
+                attacker != null ? attacker.sortingOrder : 0,
+                player.sortingOrder
+            ) + 6;
+
+        yield return PlayThunderboltEffectRoutine(
+            player,
+            damage,
+            sortingOrder,
+            true
+        );
+    }
+
+
+    private IEnumerator PlaySkeletonProjectile(SpriteRenderer attacker, int damage)
+    {
+        if (player == null) yield break;
+        if (skeletonProjectileFrames == null || skeletonProjectileFrames.Length == 0)
+        {
+            ApplyEnemyAttackDamage(damage);
+            yield break;
+        }
+
+        PlaySpellSound(skeletonProjectileSound);
+
+        GameObject projectile = new GameObject("Skeleton Projectile");
+        SpriteRenderer visual = projectile.AddComponent<SpriteRenderer>();
+        visual.sortingLayerID = attacker.sortingLayerID;
+        visual.sortingOrder = Mathf.Max(attacker.sortingOrder, player.sortingOrder) + 6;
+        Vector3 destination = player.bounds.center;
+        Vector3 attackerCenter = attacker.bounds.center;
+        Vector3 towardPlayer = (destination - attackerCenter).normalized;
+        Vector3 start =
+            attackerCenter +
+            Vector3.up * attacker.bounds.size.y * skeletonProjectileSpawnHeight +
+            towardPlayer * attacker.bounds.size.x * 0.2f;
+        float largestHeight = 0.001f;
+        foreach (Sprite frame in skeletonProjectileFrames)
+            if (frame != null) largestHeight = Mathf.Max(largestHeight, frame.bounds.size.y);
+        projectile.transform.localScale = Vector3.one *
+            (attacker.bounds.size.y * skeletonProjectileHeight / largestHeight);
+        float duration = Mathf.Max(0.05f, skeletonProjectileDuration);
+        float elapsed = 0f;
+        try
+        {
+            while (elapsed < duration && player != null)
+            {
+                float progress = Mathf.Clamp01(elapsed / duration);
+                destination = player.bounds.center;
+                Vector3 direction = destination - start;
+                float directionAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                // 원본 스프라이트의 뾰족한 끝(왼쪽 아래)이 플레이어를 향하게 한다.
+                projectile.transform.rotation = Quaternion.Euler(0f, 0f, directionAngle + 135f);
+                int index = Mathf.Min(skeletonProjectileFrames.Length - 1,
+                    Mathf.FloorToInt(progress * skeletonProjectileFrames.Length));
+                visual.sprite = skeletonProjectileFrames[index];
+                projectile.transform.position = Vector3.Lerp(start, destination, progress);
+                SnapTransformToSpritePixels(projectile.transform, visual.sprite);
+                elapsed += Time.unscaledDeltaTime;
+                yield return null;
+            }
+            if (player != null)
+            {
+                projectile.transform.position = player.bounds.center;
+                ApplyEnemyAttackDamage(damage);
+            }
+        }
+        finally
+        {
+            if (projectile != null) Destroy(projectile);
+        }
+        yield return new WaitForSecondsRealtime(0.1f);
+    }
+
+
+    private static void SnapTransformToSpritePixels(
+        Transform targetTransform,
+        Sprite sprite)
+    {
+        if (targetTransform == null || sprite == null || sprite.pixelsPerUnit <= 0f)
+            return;
+
+        Vector3 position = targetTransform.position;
+        Vector3 scale = targetTransform.lossyScale;
+        float pixelSizeX = Mathf.Abs(scale.x) / sprite.pixelsPerUnit;
+        float pixelSizeY = Mathf.Abs(scale.y) / sprite.pixelsPerUnit;
+
+        if (pixelSizeX > 0.00001f)
+            position.x = Mathf.Round(position.x / pixelSizeX) * pixelSizeX;
+        if (pixelSizeY > 0.00001f)
+            position.y = Mathf.Round(position.y / pixelSizeY) * pixelSizeY;
+
+        targetTransform.position = position;
+    }
+
+
+    private void ApplyEnemyAttackDamage(int damage)
+    {
         int healthBeforeAttack = PlayerHP;
         int absorbed = Mathf.Min(Shield, damage);
         Shield -= absorbed;
         PlayerHP = Mathf.Max(0, PlayerHP - (damage - absorbed));
         int healthDamage = healthBeforeAttack - PlayerHP;
         RefreshStats();
+        HidePlayerAndShowDefeat();
 
         if (damage > 0)
             ShakeCamera();
@@ -1486,6 +2602,7 @@ public class SpellResultHand : MonoBehaviour
 
         if (healthDamage > 0)
         {
+            PlayPlayerMagicFlash(playerDamageFlashColor);
             ShowFloatingCombatText(
                 player,
                 $"-{healthDamage}",
@@ -1494,8 +2611,25 @@ public class SpellResultHand : MonoBehaviour
             );
         }
 
-        yield return new WaitForSecondsRealtime(0.25f);
     }
+
+    private void HidePlayerAndShowDefeat()
+    {
+        if (!PlayerDefeated)
+            return;
+
+        if (player != null)
+            player.gameObject.SetActive(false);
+        if (playerLabel != null)
+            playerLabel.gameObject.SetActive(false);
+        if (playerHPFill != null)
+            playerHPFill.gameObject.SetActive(false);
+        if (playerTapArea != null)
+            playerTapArea.gameObject.SetActive(false);
+
+        HUD?.ShowDefeat();
+    }
+
     public void AdvanceStage()
     {
         Hide();
@@ -1535,6 +2669,8 @@ public class SpellResultHand : MonoBehaviour
 
     private void LateUpdate()
     {
+        SyncCharacterOutlines();
+
         if (canvas == null)
             return;
 
@@ -1576,12 +2712,16 @@ public class SpellResultHand : MonoBehaviour
         }
 
 
+        Vector3 worldAnchor =
+            target.bounds.center +
+            Vector3.up *
+            target.bounds.extents.y;
+
+        if (fixedEnemyLabelAnchors.TryGetValue(target, out Vector3 fixedAnchor))
+            worldAnchor = fixedAnchor;
+
         Vector3 point =
-            Camera.main.WorldToScreenPoint(
-                target.bounds.center +
-                Vector3.up *
-                target.bounds.extents.y
-            );
+            Camera.main.WorldToScreenPoint(worldAnchor);
 
 
         point.y +=

@@ -44,6 +44,15 @@ public class dialogueManager : MonoBehaviour
     [SerializeField, Min(0f)]
     private float displayDuration = 2f;
 
+    [Header("Dialogue Opening Animation")]
+    [Tooltip("대화창이 처음 나타날 때의 크기입니다. 0.2는 원래 크기의 20%입니다.")]
+    [SerializeField, Range(0f, 1f)]
+    private float openingStartScale = 0.2f;
+
+    [Tooltip("작은 대화창이 원래 크기까지 커지는 시간입니다.")]
+    [SerializeField, Min(0f)]
+    private float openingDuration = 0.35f;
+
 
     // =========================================================
     // Battle
@@ -79,6 +88,22 @@ public class dialogueManager : MonoBehaviour
     private Coroutine dialogueRoutine;
 
     private bool hasStarted;
+
+    private Vector3 dialoguePanelTargetScale = Vector3.one;
+
+    private bool hasDialoguePanelTargetScale;
+
+
+    private void Awake()
+    {
+        if (dialoguePanel == null)
+            return;
+
+        dialoguePanelTargetScale = dialoguePanel.transform.localScale;
+        hasDialoguePanelTargetScale = true;
+        dialoguePanel.transform.localScale =
+            dialoguePanelTargetScale * openingStartScale;
+    }
 
 
     // =========================================================
@@ -274,6 +299,10 @@ public class dialogueManager : MonoBehaviour
         );
 
 
+        // 작은 크기에서 씬에 배치된 원래 크기까지 부드럽게 펼친다.
+        yield return AnimateDialoguePanelOpen();
+
+
         dialogueText.ForceMeshUpdate();
 
 
@@ -429,6 +458,48 @@ public class dialogueManager : MonoBehaviour
     }
 
 
+    private IEnumerator AnimateDialoguePanelOpen()
+    {
+        Transform panelTransform = dialoguePanel.transform;
+
+        if (!hasDialoguePanelTargetScale)
+        {
+            dialoguePanelTargetScale = panelTransform.localScale;
+            hasDialoguePanelTargetScale = true;
+        }
+
+        Vector3 startScale =
+            dialoguePanelTargetScale * Mathf.Clamp01(openingStartScale);
+
+        panelTransform.localScale = startScale;
+
+        float duration = Mathf.Max(0f, openingDuration);
+        if (duration <= 0f)
+        {
+            panelTransform.localScale = dialoguePanelTargetScale;
+            yield break;
+        }
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float progress = Mathf.Clamp01(elapsed / duration);
+            float easedProgress = progress * progress * (3f - 2f * progress);
+
+            panelTransform.localScale = Vector3.LerpUnclamped(
+                startScale,
+                dialoguePanelTargetScale,
+                easedProgress
+            );
+
+            yield return null;
+        }
+
+        panelTransform.localScale = dialoguePanelTargetScale;
+    }
+
+
     // =========================================================
     // 비활성화
     // =========================================================
@@ -455,6 +526,12 @@ public class dialogueManager : MonoBehaviour
             )
         )
         {
+            if (hasDialoguePanelTargetScale)
+            {
+                dialoguePanel.transform.localScale =
+                    dialoguePanelTargetScale;
+            }
+
             dialoguePanel.SetActive(
                 false
             );

@@ -85,6 +85,14 @@ public class RoomEnemySettings
 
     [Min(1)] public int maxHealth = 100;
     [Min(0)] public int attackDamage = 10;
+
+    [Header("Turn Pattern")]
+    [Tooltip("일반 공격 → 휴식 → 강한 공격 순서로 반복합니다.")]
+    public bool useNormalRestStrongPattern;
+
+    [Min(0)]
+    [Tooltip("강한 공격 턴의 피해량입니다.")]
+    public int strongAttackDamage = 20;
 }
 
 [System.Serializable]
@@ -130,6 +138,9 @@ public class SlotMachineController : MonoBehaviour
     [SerializeField]
     private List<ReelSymbolData> symbolList;
 
+    private readonly List<ReelSymbolData> availableSymbolList =
+        new List<ReelSymbolData>();
+
 
     // ========================================================
     // Room Battle Settings
@@ -171,6 +182,16 @@ public class SlotMachineController : MonoBehaviour
 
     [SerializeField, Min(0f)]
     private float reelStopShakeMagnitude = 0.055f;
+
+    [Header("Reel Stop Sound")]
+    [Tooltip("각 릴의 결과가 확정될 때 한 번 재생되는 효과음입니다.")]
+    [SerializeField]
+    private AudioClip reelStopSound;
+
+    [SerializeField, Range(0f, 1f)]
+    private float reelStopSoundVolume = 0.85f;
+
+    private AudioSource reelStopAudioSource;
 
 
     // ========================================================
@@ -280,6 +301,8 @@ public class SlotMachineController : MonoBehaviour
 
     private void Awake()
     {
+        EnsureReelStopAudioSource();
+
         if (slotUIRoot == null && spinButton != null)
         {
             slotUIRoot =
@@ -393,9 +416,12 @@ public class SlotMachineController : MonoBehaviour
         // Reel 초기화
         // ====================================================
 
+        RefreshAvailableSymbols();
+
+
         foreach (SlotReel reel in reels)
         {
-            reel.Init(symbolList);
+            reel.Init(availableSymbolList);
         }
 
 
@@ -957,6 +983,7 @@ public class SlotMachineController : MonoBehaviour
             currentSpinResults[index]
         );
 
+        PlayReelStopSound();
         PlayReelStopCameraShake();
 
 
@@ -1025,6 +1052,31 @@ public class SlotMachineController : MonoBehaviour
         );
 
         RefreshSpinButtonIdleAnimation();
+    }
+
+
+    private void EnsureReelStopAudioSource()
+    {
+        if (reelStopAudioSource != null)
+            return;
+
+        reelStopAudioSource = gameObject.AddComponent<AudioSource>();
+        reelStopAudioSource.playOnAwake = false;
+        reelStopAudioSource.loop = false;
+        reelStopAudioSource.spatialBlend = 0f;
+    }
+
+
+    private void PlayReelStopSound()
+    {
+        if (reelStopSound == null)
+            return;
+
+        EnsureReelStopAudioSource();
+        reelStopAudioSource.PlayOneShot(
+            reelStopSound,
+            reelStopSoundVolume
+        );
     }
 
 
@@ -1108,6 +1160,29 @@ public class SlotMachineController : MonoBehaviour
             new Vector2(-spinButtonBorderWidth * 0.5f, 0f),
             new Vector2(spinButtonBorderWidth, 0f)
         );
+    }
+
+
+    public bool SetSpellUpgraded(string spellName, bool upgraded = true)
+    {
+        if (symbolList == null || string.IsNullOrWhiteSpace(spellName))
+            return false;
+
+        ReelSymbolData symbol = symbolList.Find(
+            item =>
+                item != null &&
+                string.Equals(
+                    item.DisplayName,
+                    spellName,
+                    System.StringComparison.OrdinalIgnoreCase
+                )
+        );
+
+        if (symbol == null)
+            return false;
+
+        symbol.upgraded = upgraded;
+        return true;
     }
 
 
@@ -1296,7 +1371,7 @@ public class SlotMachineController : MonoBehaviour
         int totalWeight = 0;
 
 
-        foreach (ReelSymbolData symbol in symbolList)
+        foreach (ReelSymbolData symbol in availableSymbolList)
         {
             if (symbol != null)
             {
@@ -1325,7 +1400,7 @@ public class SlotMachineController : MonoBehaviour
         int sum = 0;
 
 
-        foreach (ReelSymbolData symbol in symbolList)
+        foreach (ReelSymbolData symbol in availableSymbolList)
         {
             if (symbol == null)
                 continue;
@@ -1346,6 +1421,26 @@ public class SlotMachineController : MonoBehaviour
 
 
         return null;
+    }
+
+
+    private void RefreshAvailableSymbols()
+    {
+        availableSymbolList.Clear();
+
+        int currentRoom =
+            Mathf.Max(1, RoomSelectionState.SelectedRoom);
+
+        foreach (ReelSymbolData symbol in symbolList)
+        {
+            if (
+                symbol != null &&
+                symbol.IsAvailableInRoom(currentRoom)
+            )
+            {
+                availableSymbolList.Add(symbol);
+            }
+        }
     }
 
 
@@ -1666,16 +1761,6 @@ public class SlotMachineController : MonoBehaviour
 
 
         // ====================================================
-        // 시너지 배율
-        // ====================================================
-
-        float multiplier =
-            GetSynergyMultiplier(
-                tier
-            );
-
-
-        // ====================================================
         // 기본 합계
         // ====================================================
 
@@ -1685,32 +1770,25 @@ public class SlotMachineController : MonoBehaviour
 
 
         // ====================================================
-        // 최종 수치
-        //
-        // 기획:
-        //
-        // 1~2 = ×1
-        // 3 = ×1.5
-        // 4 = ×2
-        // 5 = ×4
-        //
-        // .5는 올림
+        // 3~4매치는 콤보 보너스, 5매치는 메가 보너스를 한 번 더한다.
         // ====================================================
 
-        float multipliedValue =
-            baseTotal *
-            multiplier;
+        int synergyBonus =
+            matchCount >= 5
+                ? symbol.MegaBonus
+                : matchCount >= 3
+                    ? symbol.ComboBonus
+                    : 0;
 
 
         int totalValue =
-            Mathf.FloorToInt(
-                multipliedValue + 0.5f
-            );
+            baseTotal + synergyBonus;
 
 
-        int synergyBonus =
-            totalValue -
-            baseTotal;
+        float multiplier =
+            baseTotal > 0
+                ? (float)totalValue / baseTotal
+                : 1f;
 
 
         // ====================================================
@@ -2485,11 +2563,25 @@ public class SlotMachineController : MonoBehaviour
         }
 
 
+        RefreshAvailableSymbols();
+
+
+        if (availableSymbolList.Count == 0)
+        {
+            Debug.LogError(
+                $"Room {Mathf.Max(1, RoomSelectionState.SelectedRoom)}에서 사용할 수 있는 마법이 없습니다. 각 마법의 Available From Room 값을 확인해주세요.",
+                this
+            );
+
+            return false;
+        }
+
+
         int totalWeight =
             0;
 
 
-        foreach (ReelSymbolData symbol in symbolList)
+        foreach (ReelSymbolData symbol in availableSymbolList)
         {
             if (symbol != null)
             {
@@ -2505,7 +2597,7 @@ public class SlotMachineController : MonoBehaviour
         if (totalWeight <= 0)
         {
             Debug.LogError(
-                "심볼 전체 가중치는 1 이상이어야 합니다.",
+                $"Room {Mathf.Max(1, RoomSelectionState.SelectedRoom)}에서 사용할 수 있는 마법의 전체 가중치는 1 이상이어야 합니다.",
                 this
             );
 
